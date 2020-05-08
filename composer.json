@@ -1,0 +1,24 @@
+{
+  "name": "jeyroik/junkman-api",
+  "description": "Junkman story",
+  "require": {
+    "jeyroik/extas-players": "1.*",
+    "jeyroik/extas-installer": "2.*",
+    "jeyroik/extas-jsonrpc": "2.*",
+    "jeyroik/extas-samples": "2.*",
+    "jeyroik/extas-repositories-get": "0.*",
+    "jeyroik/extas-repositories-mongo": "1.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "vlucas/phpdotenv": "^3.4",
+  },
+  "autoload": {
+    "psr-4": {
+      "junkman\\": "src/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit --testdox --coverage-clover=coverage.xml --whitelist=src/components tests"
+  }
+}
