@@ -27,7 +27,7 @@ class SkillRest extends SkillDispatcher
         $maxHp = $junkman->getParameterValue($junkman::PARAM__HEALTH_MAX, 0);
         $curHp = $junkman->getParameterValue($junkman::PARAM__HEALTH, 0);
 
-        if ($curHp < $maxHp) {
+        if (($curHp < $maxHp) || ($junkman->getParameterValue(SkillTiredness::NAME))) {
             $regen = $junkman->getCurrentHealthRegeneration();
             $this->regeneration($junkman, $maxHp, $curHp, $regen);
         }
