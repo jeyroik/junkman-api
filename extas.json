@@ -547,6 +547,48 @@
           }
         }
       }
+    },
+    {
+      "name": "junkman.move",
+      "title": "Move between locations",
+      "description": "Move to another location",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanMove",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "junkman_name": {
+              "type": "string"
+            },
+            "adjacent_name": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "current_title": {
+              "type": "string"
+            },
+            "current_about": {
+              "type": "string"
+            },
+            "adjacent": {
+              "type": "array",
+              "properties": {
+                "item": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }
