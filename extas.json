@@ -6,8 +6,16 @@
       "interface": "junkman\\interfaces\\IJunkmanRepository"
     },
     {
+      "class": "junkman\\components\\JunkmanRepository",
+      "interface": "junkmanRepository"
+    },
+    {
       "class": "junkman\\components\\skills\\SkillRepository",
       "interface": "junkman\\interfaces\\skills\\ISkillRepository"
+    },
+    {
+      "class": "junkman\\components\\skills\\SkillRepository",
+      "interface": "skillRepository"
     }
   ],
   "plugins": [

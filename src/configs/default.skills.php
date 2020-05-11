@@ -27,11 +27,6 @@ return [
         Skill::FIELD__DEFINITION => '',
         Skill::FIELD__FREQUENCY => [],
         Skill::FIELD__CLASS => SkillSearch::class,
-        Skill::FIELD__PARAMETERS => [
-            SkillRest::FIELD__DEFAULT_REGENERATION => [
-                ISampleParameter::FIELD__NAME => SkillRest::FIELD__DEFAULT_REGENERATION,
-                ISampleParameter::FIELD__VALUE => 1
-            ]
-        ]
+        Skill::FIELD__PARAMETERS => []
     ])
 ];
