@@ -30,7 +30,7 @@ class ExtensionUseSkill extends Extension implements IExtensionUseSkill
     ): void
     {
         if ($owner->hasSkill($skillName)) {
-            $skill = new Skill($this->config[IHasSkills::FIELD__SKILLS][$skillName]);
+            $skill = $owner->getSkill($skillName);
             $owner->use($skill, IStageJunkmanUseSkill::NAME__SUFFIX, $junkman, $args);
 
             $stage = IStageJunkmanUseSkill::NAME__PREFIX . IStageJunkmanUseSkill::NAME__SUFFIX . '.' . $skillName;
