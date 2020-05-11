@@ -7,6 +7,7 @@ use junkman\interfaces\IJunkman;
  * Class SkillSearch
  *
  * @method skillRepository()
+ * @method junkmanRepository()
  *
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
@@ -27,6 +28,7 @@ class SkillSearch extends SkillDispatcher
         foreach ($skills as $skill) {
             if (!$junkman->hasSkill($skill->getName())) {
                 $junkman->addSkill($skill);
+                $this->junkmanRepository()->update($junkman);
                 break;
             }
         }

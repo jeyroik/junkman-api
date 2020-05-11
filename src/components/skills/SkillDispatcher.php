@@ -8,6 +8,8 @@ use junkman\interfaces\skills\ISkillDispatcher;
 /**
  * Class SkillDispatcher
  *
+ * @method junkmanRepository()
+ *
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
  */
@@ -36,6 +38,7 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
                 $junkman,
                 [SkillTiredness::FIELD__COST => $this->getTirednessValue()]
             );
+            $this->junkmanRepository()->update($junkman);
         }
     }
 
