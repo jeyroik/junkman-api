@@ -17,6 +17,10 @@
         "junkman\\components\\plugins\\PluginInstallSkills"
       ],
       "stage": "extas.install"
+    },
+    {
+      "class": "junkman\\components\\plugins\\junkman\\AttachDefaultSkills",
+      "stage": "extas.junkmen.create.before"
     }
   ],
   "extensions": [
@@ -25,6 +29,55 @@
       "interface": "extas\\interfaces\\extensions\\IExtensionRepositoryGet",
       "subject": "*",
       "methods": ["skillRepository", "junkmanRepository"]
+    }
+  ],
+  "junkman_skills": [
+    {
+      "name": "rest",
+      "title": "Отдых",
+      "description": "Позволяет восстановить силы",
+      "definition": "Восстанавливает Х здоровья и уменьшает усталость на Х, где Х - значение регенерации",
+      "class": "junkman\\components\\skills\\SkillRest",
+      "frequency": [],
+      "parameters": {
+        "default_health_regen": {
+          "name": "default_health_regen",
+          "value": 1
+        }
+      }
+    },
+    {
+      "name": "search",
+      "title": "Поиск",
+      "description": "Позволяет порыться в попытках найти хоть что-нибудь",
+      "definition": "Позволяет найти дополнительные артефакты",
+      "class": "junkman\\components\\skills\\SkillSearch",
+      "frequency": [],
+      "parameters": {}
+    },
+    {
+      "name": "tiredness",
+      "title": "Усталость",
+      "description": "Усталость",
+      "definition": "Каждые 5 ед. усталости отнимает 1 ед. жизни, каждые 5 отнятые ед. жизни увеличичвают усталость на 1 ед.",
+      "class": "junkman\\components\\skills\\SkillTiredness",
+      "frequency": [],
+      "parameters": {}
+    },
+    {
+      "name": "spike_thrower",
+      "title": "Гвоздомёт",
+      "description": "Внешне это довольно компактный агрегат оранжевого цвета с серой рукоятью. Кнопка выстрела, видимо, не исправна, т.к. нажимается с большим трудом и, судя по всему, каждый запуск лишь ухудшает положение. Эта штуковина продляет вашу жизнь исключительно укорачиванием чужой жизни. Вбивайте гвозди в чужой гроб, пока не вбили в ваш!",
+      "definition": "Первый гвоздь отнимает 1 ед. чужой жизни и добавляет вам 1 ед. усталости, каждый последующий - наносит на 1 ед. больше и прибавляет на 1 ед. больше усталости.",
+      "class": "junkman\\components\\skills\\SkillSpikeThrower",
+      "frequency": [1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
+      "parameters": {
+        "resource": {
+          "name": "resource",
+          "title": "12 гвоздей",
+          "value": 12
+        }
+      }
     }
   ],
   "jsonrpc_operations": [
@@ -121,6 +174,79 @@
               "type": "string"
             },
             "skill_name": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "class": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "mixed"
+                    }
+                  }
+                }
+              }
+            },
+            "parameters": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "mixed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "junkman.search",
+      "title": "Search something...",
+      "description": "Try to search something around",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanSearch",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "junkman_name": {
               "type": "string"
             }
           }

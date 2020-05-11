@@ -24,6 +24,22 @@ class Skill extends Item implements ISkill
     /**
      * @return string
      */
+    public function getDefinition(): string
+    {
+        return $this->config[static::FIELD__DEFINITION] ?? '';
+    }
+
+    /**
+     * @return array
+     */
+    public function getFrequency(): array
+    {
+        return $this->config[static::FIELD__FREQUENCY] ?? [];
+    }
+
+    /**
+     * @return string
+     */
     protected function getSubjectForExtension(): string
     {
         return static::SUBJECT;

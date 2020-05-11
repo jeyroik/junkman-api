@@ -16,4 +16,17 @@ use extas\interfaces\samples\parameters\IHasSampleParameters;
 interface ISkill extends IItem, IHasName, IHasDescription, IHasClass, IHasSampleParameters
 {
     public const SUBJECT = 'junkman.skill';
+
+    public const FIELD__DEFINITION = 'definition';
+    public const FIELD__FREQUENCY = 'frequency';
+
+    /**
+     * @return string
+     */
+    public function getDefinition(): string;
+
+    /**
+     * @return array
+     */
+    public function getFrequency(): array;
 }

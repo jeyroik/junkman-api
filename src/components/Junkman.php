@@ -6,6 +6,8 @@ use extas\components\samples\parameters\THasSampleParameters;
 use junkman\components\skills\Skill;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
+use junkman\interfaces\skills\ISkillDispatcher;
+use junkman\interfaces\stages\IStageJunkmanUseSkill;
 
 /**
  * Class Junkman
@@ -33,6 +35,15 @@ class Junkman extends Player implements IJunkman
         return $this;
     }
 
+    public function getSkill(string $skillName): ?ISkill
+    {
+        if ($this->hasSkill($skillName)) {
+            return new Skill($this->config[static::FIELD__SKILLS][$skillName]);
+        }
+
+        return null;
+    }
+
     /**
      * @param array $skills
      * @return $this
@@ -50,7 +61,7 @@ class Junkman extends Player implements IJunkman
      * @param string $skillName
      * @return bool
      */
-    public function hasSkill(string $skillName)
+    public function hasSkill(string $skillName): bool
     {
         $skills = $this->config[static::FIELD__SKILLS] ?? [];
 
@@ -93,38 +104,45 @@ class Junkman extends Player implements IJunkman
 
     /**
      * @param string $skillName
-     * @param array $args
      * @param IJunkman|null $junkman
-     * @return $this
+     * @param array $args
      */
-    public function useSkill(string $skillName, array $args, IJunkman &$junkman = null)
+    public function useSkill(string $skillName, ?IJunkman &$junkman = null, array $args = []): void
     {
         if ($this->hasSkill($skillName)) {
             $skill = new Skill($this->config[static::FIELD__SKILLS][$skillName]);
-            $dispatcher = $skill->buildClassWithParameters($args);
-            $dispatcher($this, $junkman);
+            /**
+             * @var ISkillDispatcher $dispatcher
+             */
+            $dispatcher = $skill->buildClassWithParameters($skill->getParametersValues());
+            $dispatcher($this, $junkman, $args);
 
-            foreach ($this->getPluginsByStage('junkman.use.skill') as $plugin) {
+            foreach ($this->getPluginsByStage(IStageJunkmanUseSkill::NAME) as $plugin) {
+                /**
+                 * @var IStageJunkmanUseSkill $plugin
+                 */
                 $plugin($this, $junkman, $skill);
             }
 
-            foreach ($this->getPluginsByStage('junkman.use.skill.' . $skillName) as $plugin) {
+            foreach ($this->getPluginsByStage(IStageJunkmanUseSkill::NAME . '.' . $skillName) as $plugin) {
+                /**
+                 * @var IStageJunkmanUseSkill $plugin
+                 */
                 $plugin($this, $junkman, $skill);
             }
         }
-
-        return $this;
     }
 
     /**
      * @param string $name
      * @param int $increment
+     * @param mixed $default
      * @return $this
      * @throws \Exception
      */
-    public function incProperty(string $name, int $increment)
+    public function incProperty(string $name, int $increment, $default = null)
     {
-        $val = $this->getParameterValue($name);
+        $val = $this->getParameterValue($name, $default);
         $val += $increment;
 
         $this->setParameterValue($name, $val);
@@ -143,12 +161,13 @@ class Junkman extends Player implements IJunkman
     /**
      * @param string $name
      * @param int $decrement
+     * @param mixed $default
      * @return $this
      * @throws \Exception
      */
-    public function decProperty(string $name, int $decrement)
+    public function decProperty(string $name, int $decrement, $default = null)
     {
-        $val = $this->getParameterValue($name);
+        $val = $this->getParameterValue($name, $default);
         $val -= $decrement;
 
         if ($val < 0) {
