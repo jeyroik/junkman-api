@@ -29,6 +29,10 @@
     {
       "class": "junkman\\components\\plugins\\junkman\\AttachDefaultSkills",
       "stage": "extas.junkmen.create.before"
+    },
+    {
+      "class": "extas\\components\\plugins\\PluginFieldsDefaults",
+      "stage": "junkman.self.init"
     }
   ],
   "extensions": [
