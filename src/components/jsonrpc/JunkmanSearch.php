@@ -40,7 +40,7 @@ class JunkmanSearch extends OperationDispatcher
 
         if ($junkman) {
             try {
-                $junkman->useSkill(SkillSearch::NAME, $junkman);
+                $junkman->useSkill(SkillSearch::NAME, $junkman, []);
                 return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
             } catch (\Exception $e) {
                 return $this->errorResponse(

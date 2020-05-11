@@ -34,7 +34,7 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
     {
         if (!$this instanceof SkillTiredness) {
             $skill = new SkillTiredness();
-            $skill->dispatch(
+            $skill(
                 $junkman,
                 $junkman,
                 [SkillTiredness::FIELD__COST => $this->getTirednessValue()]
