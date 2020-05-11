@@ -38,8 +38,20 @@ class JunkmanSearch extends OperationDispatcher
         $junkman = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $junkmanName]);
 
         if ($junkman) {
-            $junkman->useSkill(SkillSearch::NAME, $junkman);
-            return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
+            try {
+                $junkman->useSkill(SkillSearch::NAME, $junkman);
+                return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
+            } catch (\Exception $e) {
+                return $this->errorResponse(
+                    $jsonRpcRequest->getId(),
+                    $e->getMessage(),
+                    400,
+                    [
+                        'junkman_name' => $junkmanName,
+                        'trace' => $e->getTraceAsString()
+                    ]
+                );
+            }
         }
 
         return $this->errorResponse(
