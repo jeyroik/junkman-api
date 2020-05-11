@@ -28,7 +28,12 @@
       "class": "extas\\components\\extensions\\ExtensionRepositoryGet",
       "interface": "extas\\interfaces\\extensions\\IExtensionRepositoryGet",
       "subject": "*",
-      "methods": ["skillRepository", "junkmanRepository"]
+      "methods": [
+        "skillRepository",
+        "junkman\\interfaces\\skills\\ISkillRepository",
+        "junkmanRepository",
+        "junkman\\interfaces\\IJunkmanRepository"
+      ]
     }
   ],
   "junkman_skills": [
