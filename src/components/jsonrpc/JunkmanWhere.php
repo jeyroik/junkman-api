@@ -2,14 +2,13 @@
 namespace junkman\components\jsonrpc;
 
 use extas\components\jsonrpc\operations\OperationDispatcher;
-use junkman\components\skills\SkillSearch;
 use junkman\interfaces\extensions\IExtensionUseSkill;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class JunkmanSearch
+ * Class JunkmanWhere
  *
  * params:
  *  junkman_name
@@ -20,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
  * @package junkman\components\jsonrpc
  * @author jeyroik@gmail.com
  */
-class JunkmanSearch extends OperationDispatcher
+class JunkmanWhere extends OperationDispatcher
 {
     /**
      * @return ResponseInterface
@@ -38,20 +37,16 @@ class JunkmanSearch extends OperationDispatcher
         $junkman = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $junkmanName]);
 
         if ($junkman) {
-            try {
-                $junkman->useSkill(SkillSearch::NAME, $junkman, []);
-                return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
-            } catch (\Exception $e) {
-                return $this->errorResponse(
-                    $jsonRpcRequest->getId(),
-                    $e->getMessage(),
-                    400,
-                    [
-                        'junkman_name' => $junkmanName,
-                        'trace' => $e->getTraceAsString()
-                    ]
-                );
+            $location = $junkman->getLocation();
+            $adjacentLocations = $location->getAdjacentLocations();
+            foreach ($adjacentLocations as $index => $adjacentLocation) {
+                $adjacentLocations[$index] = $adjacentLocation->getLocation()->getTitle();
             }
+
+            return $this->successResponse($jsonRpcRequest->getId(), [
+                'about' => $location->getDescription(),
+                'adjacent' => $adjacentLocations
+            ]);
         }
 
         return $this->errorResponse(

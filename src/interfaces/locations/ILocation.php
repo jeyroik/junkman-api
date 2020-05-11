@@ -22,7 +22,7 @@ interface ILocation extends IItem, IHasName, IHasDescription, IHasSampleParamete
     public const PARAM__FREQUENCY_MAX = 'f_max';
 
     /**
-     * @return ILocation[]
+     * @return ILocationAdjacent[]
      */
     public function getAdjacentLocations(): array;
 

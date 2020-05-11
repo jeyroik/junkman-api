@@ -508,6 +508,42 @@
           }
         }
       }
+    },
+    {
+      "name": "junkman.where",
+      "title": "Where are you",
+      "description": "Look around",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanWhere",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "junkman_name": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "about": {
+              "type": "string"
+            },
+            "adjacent": {
+              "type": "array",
+              "properties": {
+                "item": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }
