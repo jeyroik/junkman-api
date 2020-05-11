@@ -55,6 +55,40 @@
         "junkmanRepository",
         "junkman\\interfaces\\IJunkmanRepository"
       ]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionHealth",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionHealth",
+      "subject": "junkman.self",
+      "methods": [
+        "getCurrentHealth",
+        "getCurrentHealthRegeneration",
+        "getMaxHealth",
+        "getLostHealth",
+        "incHealth",
+        "decHealth",
+        "incMaxHealth",
+        "decMaxHealth",
+        "incHealthRegeneration",
+        "decHealthRegeneration",
+        "isDead"
+      ]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionMoveToLocation",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionMoveToLocation",
+      "subject": "junkman.self",
+      "methods": [
+        "moveToLocation"
+      ]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionUseSkill",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionUseSkill",
+      "subject": "junkman.self",
+      "methods": [
+        "useSkill"
+      ]
     }
   ],
   "junkman_locations": [
