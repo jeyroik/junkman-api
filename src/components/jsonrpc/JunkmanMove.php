@@ -48,7 +48,8 @@ class JunkmanMove extends OperationDispatcher
             $location = $junkman->getLocation();
             $adjacentLocations = $location->getAdjacentLocations();
             foreach ($adjacentLocations as $index => $adjacentLocation) {
-                $adjacentLocations[$index] = $adjacentLocation->getLocation()->getTitle();
+                $loc = $adjacentLocation->getLocation();
+                $adjacentLocations[$loc->getName()] = $loc->getTitle();
             }
 
             return $this->successResponse($jsonRpcRequest->getId(), [
