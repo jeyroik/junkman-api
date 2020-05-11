@@ -23,7 +23,7 @@ class Junkman extends Player implements IJunkman
      * @param ISkill $skill
      * @return $this
      */
-    public function addSkill(ISkill $skill)
+    public function addSkill(ISkill $skill): IJunkman
     {
         $this->config[static::FIELD__SKILLS] = $this->config[static::FIELD__SKILLS] ?? [];
         $this->config[static::FIELD__SKILLS][$skill->getName()] = $skill->__toArray();
@@ -48,7 +48,7 @@ class Junkman extends Player implements IJunkman
      * @param array $skills
      * @return $this
      */
-    public function addSkills(array $skills)
+    public function addSkills(array $skills): IJunkman
     {
         foreach ($skills as $skill) {
             $this->addSkill($skill);
@@ -72,7 +72,7 @@ class Junkman extends Player implements IJunkman
      * @param string $skillName
      * @return $this
      */
-    public function removeSkill(string $skillName)
+    public function removeSkill(string $skillName): IJunkman
     {
         if ($this->hasSkill($skillName)) {
             unset($this->config[static::FIELD__SKILLS][$skillName]);
@@ -93,7 +93,7 @@ class Junkman extends Player implements IJunkman
      * @param array $skillsNames
      * @return $this
      */
-    public function removeSkills(array $skillsNames)
+    public function removeSkills(array $skillsNames): IJunkman
     {
         foreach ($skillsNames as $skillName) {
             $this->removeSkill($skillName);
@@ -140,7 +140,7 @@ class Junkman extends Player implements IJunkman
      * @return $this
      * @throws \Exception
      */
-    public function incProperty(string $name, int $increment, $default = null)
+    public function incProperty(string $name, int $increment, $default = null): IJunkman
     {
         $val = $this->getParameterValue($name, $default);
         $val += $increment;
@@ -165,7 +165,7 @@ class Junkman extends Player implements IJunkman
      * @return $this
      * @throws \Exception
      */
-    public function decProperty(string $name, int $decrement, $default = null)
+    public function decProperty(string $name, int $decrement, $default = null): IJunkman
     {
         $val = $this->getParameterValue($name, $default);
         $val -= $decrement;
@@ -193,5 +193,13 @@ class Junkman extends Player implements IJunkman
     public function isDead(): bool
     {
         return $this->getParameterValue(static::FIELD__HEALTH) == 0;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSubjectForExtension(): string
+    {
+        return 'junkman.self';
     }
 }

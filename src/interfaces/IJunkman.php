@@ -13,8 +13,6 @@ use junkman\interfaces\skills\ISkill;
  */
 interface IJunkman extends IPlayer, IHasSampleParameters
 {
-    public const SUBJECT = 'junkman.self';
-
     public const FIELD__SKILLS = 'skills';
     public const FIELD__HEALTH = 'health';
     public const FIELD__HEALTH_MAX = 'health_max';
