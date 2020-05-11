@@ -437,6 +437,82 @@
       }
     },
     {
+      "name": "junkman.skill.use",
+      "title": "Junkman use skill",
+      "description": "Use any junkman skill, but be careful!",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanUseSkill",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "junkman_name": {
+              "type": "string"
+            },
+            "skill_name": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "class": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "mixed"
+                    }
+                  }
+                }
+              }
+            },
+            "parameters": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "mixed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "junkman.search",
       "title": "Search something...",
       "description": "Try to search something around",
