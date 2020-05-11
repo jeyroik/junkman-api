@@ -93,6 +93,67 @@
       }
     }
   ],
+  "fields": [
+    {
+      "name": "parameters",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": {
+        "health": {
+          "name": "health",
+          "value": 100
+        },
+        "health_max": {
+          "name": "health_max",
+          "value": 100
+        },
+        "health_regeneration": {
+          "name": "health_regeneration",
+          "value": 100
+        },
+        "attack": {
+          "name": "attack",
+          "value": 1
+        },
+        "attack_max": {
+          "name": "attack_max",
+          "value": 1
+        },
+        "defense": {
+          "name": "defense",
+          "value": 1
+        },
+        "defense_max": {
+          "name": "defense_max",
+          "value": 1
+        },
+        "move": {
+          "name": "move",
+          "value": 1
+        },
+        "move_speed": {
+          "name": "move_speed",
+          "value": 1
+        },
+        "critical_chance": {
+          "name": "critical_chance",
+          "value": 5
+        },
+        "critical_multiple": {
+          "name": "critical_multiple",
+          "value": 20
+        },
+        "tiredness": {
+          "name": "tiredness",
+          "value": 0
+        }
+      }
+    }
+  ],
   "jsonrpc_operations": [
     {
       "name": "junkman.skill.add",
