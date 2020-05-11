@@ -16,6 +16,14 @@
     {
       "class": "junkman\\components\\skills\\SkillRepository",
       "interface": "skillRepository"
+    },
+    {
+      "class": "junkman\\components\\locations\\LocationRepository",
+      "interface": "junkman\\interfaces\\locations\\ILocationRepository"
+    },
+    {
+      "class": "junkman\\components\\locations\\LocationRepository",
+      "interface": "locationRepository"
     }
   ],
   "plugins": [
