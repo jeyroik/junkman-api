@@ -3,6 +3,7 @@ namespace junkman\components\skills;
 
 use extas\components\Item;
 use junkman\interfaces\IJunkman;
+use junkman\interfaces\skills\ISkill;
 use junkman\interfaces\skills\ISkillDispatcher;
 
 /**
@@ -15,12 +16,7 @@ use junkman\interfaces\skills\ISkillDispatcher;
  */
 abstract class SkillDispatcher extends Item implements ISkillDispatcher
 {
-    /**
-     * @param IJunkman $junkman
-     * @param IJunkman|null $enemy
-     * @param array $args
-     */
-    public function __invoke(IJunkman &$junkman, ?IJunkman &$enemy, array $args = []): void
+    public function __invoke(IJunkman &$junkman, ISkill $skill, ?IJunkman &$enemy, array $args = []): void
     {
         $this->dispatch($junkman, $enemy, $args);
         $this->setTiredness($junkman);
@@ -36,6 +32,7 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
             $skill = new SkillTiredness();
             $skill(
                 $junkman,
+                new Skill(),
                 $junkman,
                 [SkillTiredness::FIELD__COST => $this->getTirednessValue()]
             );

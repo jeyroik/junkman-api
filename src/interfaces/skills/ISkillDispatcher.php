@@ -14,8 +14,9 @@ interface ISkillDispatcher extends IItem
 {
     /**
      * @param IJunkman $junkman
+     * @param ISkill $skill
      * @param IJunkman|null $enemy
      * @param array $args
      */
-    public function __invoke(IJunkman &$junkman, ?IJunkman &$enemy, array $args = []): void;
+    public function __invoke(IJunkman &$junkman, ISkill $skill, ?IJunkman &$enemy, array $args = []): void;
 }
