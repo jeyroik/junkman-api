@@ -530,7 +530,10 @@
         "response": {
           "type": "array",
           "properties": {
-            "about": {
+            "current_title": {
+              "type": "string"
+            },
+            "current_about": {
               "type": "string"
             },
             "adjacent": {
