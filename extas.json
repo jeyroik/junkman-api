@@ -53,7 +53,9 @@
         "skillRepository",
         "junkman\\interfaces\\skills\\ISkillRepository",
         "junkmanRepository",
-        "junkman\\interfaces\\IJunkmanRepository"
+        "junkman\\interfaces\\IJunkmanRepository",
+        "locationRepository",
+        "junkman\\interfaces\\locations\\ILocationRepository"
       ]
     },
     {
