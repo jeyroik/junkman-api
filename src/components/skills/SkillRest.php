@@ -1,6 +1,7 @@
 <?php
 namespace junkman\components\skills;
 
+use junkman\interfaces\extensions\IExtensionHealth;
 use junkman\interfaces\IJunkman;
 
 /**
@@ -17,7 +18,7 @@ class SkillRest extends SkillDispatcher
     protected IJunkman $junkman;
 
     /**
-     * @param IJunkman $junkman
+     * @param IJunkman|IExtensionHealth $junkman
      * @param IJunkman|null $enemy
      * @param array $args
      */
@@ -27,10 +28,7 @@ class SkillRest extends SkillDispatcher
         $curHp = $junkman->getParameterValue($junkman::PARAM__HEALTH, 0);
 
         if ($curHp < $maxHp) {
-            $regen = $junkman->getParameterValue(
-                $junkman::PARAM__HEALTH_REGENERATION,
-                $this->getDefaultRegeneration()
-            );
+            $regen = $junkman->getCurrentHealthRegeneration();
             $this->regeneration($junkman, $maxHp, $curHp, $regen);
         }
 
@@ -42,18 +40,7 @@ class SkillRest extends SkillDispatcher
      */
     protected function getTirednessValue(): int
     {
-        return -$this->junkman->getParameterValue(
-            $this->junkman::PARAM__HEALTH_REGENERATION,
-            $this->getDefaultRegeneration()
-        );
-    }
-
-    /**
-     * @return int
-     */
-    protected function getDefaultRegeneration(): int
-    {
-        return $this->config[static::FIELD__DEFAULT_REGENERATION] ?? 1;
+        return 0;
     }
 
     /**
@@ -70,6 +57,14 @@ class SkillRest extends SkillDispatcher
         } else {
             $junkman->incProperty($junkman::PARAM__HEALTH, $regen);
         }
+
+        if ($junkman->getParameterValue(SkillTiredness::NAME) < $regen) {
+            $junkman->setParameterValue(SkillTiredness::NAME, 0);
+        } else {
+            $junkman->decProperty(SkillTiredness::NAME, $regen);
+        }
+
+        $this->junkmanRepository()->update($junkman);
     }
 
     /**
