@@ -35,6 +35,13 @@ interface IJunkman extends IPlayer, IHasSampleParameters, IHasLocation, IHasSkil
     public function use(IHasClass $subject, string $stageSuffix, ...$args): void;
 
     /**
+     * @param string $skillName
+     * @param IJunkman|null $enemy
+     * @param array $args
+     */
+    public function useSkill(string $skillName, ?IJunkman &$enemy = null, array $args = []): void;
+
+    /**
      * @param string $name
      * @param int $increment
      * @param null $default

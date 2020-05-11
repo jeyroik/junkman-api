@@ -83,14 +83,6 @@
       "methods": [
         "moveToLocation"
       ]
-    },
-    {
-      "class": "junkman\\components\\extensions\\ExtensionUseSkill",
-      "interface": "junkman\\interfaces\\extensions\\IExtensionUseSkill",
-      "subject": "junkman.self",
-      "methods": [
-        "useSkill"
-      ]
     }
   ],
   "junkman_locations": [

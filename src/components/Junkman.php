@@ -8,6 +8,7 @@ use junkman\components\locations\THasLocation;
 use junkman\components\skills\THasSkills;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\stages\IStageJunkmanUse;
+use junkman\interfaces\stages\IStageJunkmanUseSkill;
 
 /**
  * Class Junkman
@@ -33,6 +34,27 @@ class Junkman extends Player implements IJunkman
 
         foreach ($this->getPluginsByStage(IStageJunkmanUse::NAME__PREFIX. $stageSuffix) as $plugin) {
             $plugin($this, $subject, ...$args);
+        }
+    }
+
+    /**
+     * @param string $skillName
+     * @param IJunkman|null $junkman
+     * @param array $args
+     */
+    public function useSkill(string $skillName, ?IJunkman &$junkman = null, array $args = []): void
+    {
+        if ($this->hasSkill($skillName)) {
+            $skill = $this->getSkill($skillName);
+            $this->use($skill, IStageJunkmanUseSkill::NAME__SUFFIX, $junkman, $args);
+
+            $stage = IStageJunkmanUseSkill::NAME__PREFIX . IStageJunkmanUseSkill::NAME__SUFFIX . '.' . $skillName;
+            foreach ($this->getPluginsByStage($stage) as $plugin) {
+                /**
+                 * @var IStageJunkmanUseSkill $plugin
+                 */
+                $plugin($this, $skill, $junkman, $args);
+            }
         }
     }
 

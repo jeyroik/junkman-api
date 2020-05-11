@@ -3,7 +3,6 @@ namespace junkman\components\jsonrpc;
 
 use extas\components\jsonrpc\operations\OperationDispatcher;
 use junkman\interfaces\extensions\IExtensionMoveToLocation;
-use junkman\interfaces\extensions\IExtensionUseSkill;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
 use Psr\Http\Message\ResponseInterface;

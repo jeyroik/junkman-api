@@ -1,7 +1,6 @@
 <?php
 namespace junkman\components\jsonrpc;
 
-use junkman\interfaces\extensions\IExtensionUseSkill;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
 
@@ -21,7 +20,7 @@ use junkman\interfaces\skills\ISkill;
 class JunkmanUseSkill extends JunkmanAddSkill
 {
     /**
-     * @param IJunkman|IExtensionUseSkill $junkman
+     * @param IJunkman $junkman
      * @param ISkill $skill
      */
     protected function doAction(IJunkman &$junkman, ISkill $skill)
