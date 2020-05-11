@@ -1,6 +1,7 @@
 <?php
-namespace extas\components\plugins;
+namespace junkman\components\plugins;
 
+use extas\components\plugins\PluginInstallDefault;
 use junkman\components\locations\Location;
 use junkman\interfaces\locations\ILocationRepository;
 
