@@ -24,6 +24,7 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
     {
         $this->dispatch($junkman, $enemy, $args);
         $this->setTiredness($junkman);
+        $this->junkmanRepository()->update($junkman);
     }
 
     /**
@@ -38,7 +39,6 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
                 $junkman,
                 [SkillTiredness::FIELD__COST => $this->getTirednessValue()]
             );
-            $this->junkmanRepository()->update($junkman);
         }
     }
 

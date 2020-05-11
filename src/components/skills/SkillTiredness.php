@@ -1,7 +1,7 @@
 <?php
 namespace junkman\components\skills;
 
-use c2b\interfaces\IChanceAble;
+use junkman\interfaces\extensions\IExtensionHealth;
 use junkman\interfaces\IJunkman;
 
 /**
@@ -16,7 +16,7 @@ class SkillTiredness extends SkillDispatcher
     public const FIELD__COST = 'cost';
 
     /**
-     * @param IJunkman $junkman
+     * @param IJunkman|IExtensionHealth $junkman
      * @param IJunkman|null $enemy
      * @param array $args
      */
@@ -29,12 +29,10 @@ class SkillTiredness extends SkillDispatcher
 
         if ($currentTiredness > 4) {
             $healthCost = round($currentTiredness/5);
-            $junkman->decProperty(IJunkman::FIELD__HEALTH, $healthCost);
+            $junkman->decHealth($healthCost);
         }
 
-        $maxHealth = $junkman->getParameterValue(IJunkman::FIELD__HEALTH_MAX, 0);
-        $currentHealth = $junkman->getParameterValue(IJunkman::FIELD__HEALTH, 0);
-        $lostHealth = $maxHealth - $currentHealth;
+        $lostHealth = $junkman->getLostHealth();
         $tiredCost = round($lostHealth/5);
         $junkman->incProperty(static::NAME, $tiredCost);
     }

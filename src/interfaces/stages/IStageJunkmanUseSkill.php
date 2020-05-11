@@ -10,14 +10,15 @@ use junkman\interfaces\skills\ISkill;
  * @package junkman\interfaces\stages
  * @author jeyroik@gmail.com
  */
-interface IStageJunkmanUseSkill
+interface IStageJunkmanUseSkill extends IStageJunkmanUse
 {
-    public const NAME = 'junkman.use.skill';
+    public const NAME__SUFFIX = 'skill';
 
     /**
      * @param IJunkman $owner
-     * @param IJunkman $enemy
      * @param ISkill $skill
+     * @param IJunkman|null $enemy
+     * @param array $args
      */
-    public function __invoke(IJunkman &$owner, ?IJunkman &$enemy, ISkill $skill): void;
+    public function __invoke(IJunkman &$owner, ISkill $skill, ?IJunkman &$enemy, array $args = []): void;
 }

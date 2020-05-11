@@ -22,7 +22,8 @@
     {
       "class": [
         "junkman\\components\\plugins\\PluginInstallJunkmen",
-        "junkman\\components\\plugins\\PluginInstallSkills"
+        "junkman\\components\\plugins\\PluginInstallSkills",
+        "junkman\\components\\plugins\\PluginInstallLocations"
       ],
       "stage": "extas.install"
     },
@@ -46,6 +47,50 @@
         "junkmanRepository",
         "junkman\\interfaces\\IJunkmanRepository"
       ]
+    }
+  ],
+  "junkman_locations": [
+    {
+      "name": "butterfly_nii_cabinet_671",
+      "title": "Кабинет №671 заброшенного НИИ 'Бабочка'",
+      "description": "Довольно просторный кабинет с множеством тумбочек и шкафов. Наверное, там есть чем поживиться!",
+      "parameters": {
+        "f_min": {
+          "name": "f_min",
+          "value": 0
+        },
+        "f_max": {
+          "name": "f_max",
+          "value": 99
+        }
+      },
+      "adjacent_locations": {
+        "butterfly_nii_stage_6_hall": {
+          "location_name": "butterfly_nii_stage_6_hall",
+          "class": "junkman\\components\\locations\\AdjacentDoorOpen"
+        }
+      }
+    },
+    {
+      "name": "butterfly_nii_stage_6_hall",
+      "title": "Холл 6 этажа заброшенного НИИ 'Бабочка'",
+      "description": "Узкий коридор с облупившейся краской на стенах, пара уцелевших ламп мерцают, подпитываемые непонятно каким генератором.",
+      "parameters": {
+        "f_min": {
+          "name": "f_min",
+          "value": 100
+        },
+        "f_max": {
+          "name": "f_max",
+          "value": 200
+        }
+      },
+      "adjacent_locations": {
+        "butterfly_nii_cabinet_671": {
+          "location_name": "butterfly_nii_cabinet_671",
+          "class": "junkman\\components\\locations\\AdjacentDoorOpen"
+        }
+      }
     }
   ],
   "junkman_skills": [
@@ -99,7 +144,19 @@
   ],
   "fields": [
     {
+      "name": "location_name",
+      "type": "string",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": "@oneof(butterfly_nii_stage_6_hall,butterfly_nii_cabinet_671)"
+    },
+    {
       "name": "parameters",
+      "type": "array",
       "parameters": {
         "subject": {
           "name": "subject",
@@ -117,7 +174,7 @@
         },
         "health_regeneration": {
           "name": "health_regeneration",
-          "value": 100
+          "value": 1
         },
         "attack": {
           "name": "attack",
@@ -154,6 +211,30 @@
         "tiredness": {
           "name": "tiredness",
           "value": 0
+        }
+      }
+    }
+  ],
+  "parsers": [
+    {
+      "name": "one_of__comma",
+      "title": "One of",
+      "description": "Get on value of a list",
+      "class": "extas\\components\\parsers\\ParserOneOf",
+      "value": "oneof",
+      "condition": "~",
+      "parameters": {
+        "pattern": {
+          "name": "pattern",
+          "title": "Паттерн",
+          "description": "Паттерн для поиска в значении списка для замены.",
+          "value": "/\\@oneof\\((.*)\\)/"
+        },
+        "delimiter": {
+          "name": "delimiter",
+          "title": "Разделитель",
+          "description": "Разделитель элементов в списке для замены.",
+          "value": ","
         }
       }
     }

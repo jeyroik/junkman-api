@@ -3,6 +3,7 @@ namespace junkman\components\jsonrpc;
 
 use extas\components\jsonrpc\operations\OperationDispatcher;
 use junkman\components\skills\SkillSearch;
+use junkman\interfaces\extensions\IExtensionUseSkill;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
 use Psr\Http\Message\ResponseInterface;
@@ -32,7 +33,7 @@ class JunkmanSearch extends OperationDispatcher
         $junkmanName = $params['junkman_name'] ?? '';
 
         /**
-         * @var IJunkman $junkman
+         * @var IJunkman|IExtensionUseSkill $junkman
          * @var ISkill $skill
          */
         $junkman = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $junkmanName]);

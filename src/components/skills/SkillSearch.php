@@ -2,6 +2,7 @@
 namespace junkman\components\skills;
 
 use junkman\interfaces\IJunkman;
+use junkman\interfaces\locations\ILocation;
 
 /**
  * Class SkillSearch
@@ -23,7 +24,13 @@ class SkillSearch extends SkillDispatcher
      */
     protected function dispatch(IJunkman &$junkman, ?IJunkman &$enemy, array $args = []): void
     {
-        $rand = mt_rand(0, 100);
+        $currentLocation = $junkman->getLocation();
+
+        $rand = mt_rand(
+            $currentLocation->getParameterValue(ILocation::PARAM__FREQUENCY_MIN, 0),
+            $currentLocation->getParameterValue(ILocation::PARAM__FREQUENCY_MAX, 100),
+        );
+
         $skills = $this->skillRepository()->all(['frequency' => $rand]);
         foreach ($skills as $skill) {
             if (!$junkman->hasSkill($skill->getName())) {

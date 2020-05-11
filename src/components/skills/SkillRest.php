@@ -23,12 +23,12 @@ class SkillRest extends SkillDispatcher
      */
     protected function dispatch(IJunkman &$junkman, ?IJunkman &$enemy, array $args = []): void
     {
-        $maxHp = $junkman->getParameterValue($junkman::FIELD__HEALTH_MAX, 0);
-        $curHp = $junkman->getParameterValue($junkman::FIELD__HEALTH, 0);
+        $maxHp = $junkman->getParameterValue($junkman::PARAM__HEALTH_MAX, 0);
+        $curHp = $junkman->getParameterValue($junkman::PARAM__HEALTH, 0);
 
         if ($curHp < $maxHp) {
             $regen = $junkman->getParameterValue(
-                $junkman::FIELD__HEALTH_REGENERATION,
+                $junkman::PARAM__HEALTH_REGENERATION,
                 $this->getDefaultRegeneration()
             );
             $this->regeneration($junkman, $maxHp, $curHp, $regen);
@@ -43,7 +43,7 @@ class SkillRest extends SkillDispatcher
     protected function getTirednessValue(): int
     {
         return -$this->junkman->getParameterValue(
-            $this->junkman::FIELD__HEALTH_REGENERATION,
+            $this->junkman::PARAM__HEALTH_REGENERATION,
             $this->getDefaultRegeneration()
         );
     }
@@ -66,9 +66,9 @@ class SkillRest extends SkillDispatcher
     {
         if ($regen > ($maxHp - $curHp)) {
             $curHp = $maxHp;
-            $junkman->setParameterValue($junkman::FIELD__HEALTH, $curHp);
+            $junkman->setParameterValue($junkman::PARAM__HEALTH, $curHp);
         } else {
-            $junkman->incProperty($junkman::FIELD__HEALTH, $regen);
+            $junkman->incProperty($junkman::PARAM__HEALTH, $regen);
         }
     }
 

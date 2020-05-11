@@ -39,7 +39,7 @@ class SkillSpikeThrower extends SkillDispatcher
         $spikesCount = $thrower->getParameterValue('resource', 0);
         if ($spikesCount) {
             $this->tiredness = $damage = (12 - $spikesCount + 1);
-            $enemy->decProperty($enemy::FIELD__HEALTH, $damage);
+            $enemy->decProperty($enemy::PARAM__HEALTH, $damage);
             $thrower->setParameterValue('resource', $spikesCount-1);
             $junkman->removeSkill(static::NAME);
             $junkman->addSkill($thrower);
