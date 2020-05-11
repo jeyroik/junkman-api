@@ -28,7 +28,7 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
      */
     protected function setTiredness(IJunkman &$junkman): void
     {
-        if (!$this instanceof SkillTiredness) {
+        if ((!$this instanceof SkillTiredness) && $this->getTirednessValue()) {
             $skill = new SkillTiredness();
             $skill(
                 $junkman,
