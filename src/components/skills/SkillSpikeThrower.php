@@ -1,13 +1,15 @@
 <?php
 namespace junkman\components\skills;
 
+use junkman\components\contents\items\SpikeThrower;
+use junkman\interfaces\contents\IContentsItem;
 use junkman\interfaces\IJunkman;
-use junkman\interfaces\skills\ISkill;
 
 /**
  * Class SkillSpikeThrower
  *
  * @method tellStory(array $episodes)
+ * @method contentsItemRepository()
  *
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
@@ -17,6 +19,25 @@ class SkillSpikeThrower extends SkillDispatcher
     public const NAME = 'spike_thrower';
 
     protected int $tiredness = 0;
+    protected array $stories = [
+        'self' => [
+            [
+                'Вы, похоже, совсем съехали с катушек и шмальнули в себя гвоздём.',
+                'Хотя в чём вас винить, да и кому?'
+            ],
+            'Знал я одного гвоздодрота и звали его как-то по гвоздодротски...'
+        ],
+        'another' => [
+            'Уау! Вот это залп! Прямо в брюхо этому ублюдку!',
+            'Стрелять гвоздями...Блять, да такое нарочно не придумаешь...',
+            'Вы подумали: "Я стреляю гвоздями - значит я и есть гвоздомёт..."'
+        ],
+        'empty' => [
+            'Ад мой в зад! Похоже, закончились гвозди! Или эта хреновина просто сломалась...',
+            'Пиздец, а гвозди что ли кончаются?!',
+            'А ещё вы мечтали про свежий картон и тёплую стекловату, ну и, конечно, чтобы остался хотя бы ещё 1 гвоздь.'
+        ]
+    ];
 
     /**
      * @param IJunkman $junkman
@@ -25,7 +46,8 @@ class SkillSpikeThrower extends SkillDispatcher
      */
     protected function dispatch(IJunkman &$junkman, ?IJunkman &$enemy, array $args = []): void
     {
-        $spikeThrower = $junkman->getSkill(static::NAME);
+        $throwerName = $junkman->getParameterValue(SpikeThrower::NAME, '');
+        $spikeThrower = $junkman->getContentsItem($throwerName);
 
         if ($spikeThrower) {
             $this->throwSomeSpikes($spikeThrower, $junkman, $enemy);
@@ -33,32 +55,25 @@ class SkillSpikeThrower extends SkillDispatcher
     }
 
     /**
-     * @param ISkill $thrower
+     * @param IContentsItem $thrower
+     * @param IJunkman $junkman
      * @param IJunkman|null $enemy
      */
-    protected function throwSomeSpikes(ISkill $thrower, IJunkman &$junkman, ?IJunkman &$enemy): void
+    protected function throwSomeSpikes(IContentsItem $thrower, IJunkman &$junkman, ?IJunkman &$enemy): void
     {
-        $spikesCount = $thrower->getParameterValue('resource', 0);
+        $spikesCount = $thrower->getValue(0);
         if ($spikesCount) {
             $this->tiredness = $damage = (12 - $spikesCount + 1);
             $enemy->decProperty($enemy::PARAM__HEALTH, $damage);
             if ($junkman->getName() == $enemy->getName()) {
-                $this->tellStory([
-                    'Вы, похоже, совсем съезали с катушек и шмальнули в себя гвоздём.',
-                    'Хотя в чём вас винить, да и кому?'
-                ]);
+                $this->tellRandomStory('self');
             } else {
-                $this->tellStory([
-                    'Уау! Вот это залп! Прямо в брюхо этому ублюдку!'
-                ]);
+                $this->tellRandomStory('another');
             }
-            $thrower->setParameterValue('resource', $spikesCount-1);
-            $junkman->removeSkill(static::NAME);
-            $junkman->addSkill($thrower);
+            $thrower->setValue($spikesCount-1);
+            $this->contentsItemRepository()->update($thrower);
         } else {
-            $this->tellStory([
-                'Ад мой в зад! Похоже, закончились гвозди! Или эта ренова просто сломалась...'
-            ]);
+            $this->tellRandomStory('empty');
         }
     }
 

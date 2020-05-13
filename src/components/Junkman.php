@@ -4,6 +4,7 @@ namespace junkman\components;
 use extas\components\players\Player;
 use extas\components\samples\parameters\THasSampleParameters;
 use extas\interfaces\IHasClass;
+use junkman\components\contents\THasContentsItems;
 use junkman\components\locations\THasLocation;
 use junkman\components\skills\THasSkills;
 use junkman\interfaces\IJunkman;
@@ -13,6 +14,13 @@ use junkman\interfaces\stages\IStageJunkmanUseSkill;
 /**
  * Class Junkman
  *
+ * @jsonrpc_field name:string
+ * @jsonrpc_field title:string
+ * @jsonrpc_field description:string
+ *
+ * @jsonrpc_method create
+ * @jsonrpc_method index
+ *
  * @package junkman\components
  * @author jeyroik@gmail.com
  */
@@ -21,6 +29,7 @@ class Junkman extends Player implements IJunkman
     use THasSampleParameters;
     use THasSkills;
     use THasLocation;
+    use THasContentsItems;
 
     /**
      * @param IHasClass $subject

@@ -4,6 +4,7 @@ namespace junkman\interfaces;
 use extas\interfaces\IHasClass;
 use extas\interfaces\players\IPlayer;
 use extas\interfaces\samples\parameters\IHasSampleParameters;
+use junkman\interfaces\contents\IHasContentsItems;
 use junkman\interfaces\locations\IHasLocation;
 use junkman\interfaces\skills\IHasSkills;
 
@@ -13,11 +14,13 @@ use junkman\interfaces\skills\IHasSkills;
  * @package junkman\interfaces
  * @author jeyroik@gmail.com
  */
-interface IJunkman extends IPlayer, IHasSampleParameters, IHasLocation, IHasSkills
+interface IJunkman extends IPlayer, IHasSampleParameters, IHasLocation, IHasSkills, IHasContentsItems
 {
     public const PARAM__HEALTH = 'health';
     public const PARAM__HEALTH_MAX = 'health_max';
     public const PARAM__HEALTH_REGENERATION = 'health_regeneration';
+    public const PARAM__WEIGHT = 'weight';
+    public const PARAM__WEIGHT_MAX = 'weight_max';
     public const PARAM__ATTACK = 'attack';
     public const PARAM__ATTACK_SPEED = 'attack_speed';
     public const PARAM__DEFENSE = 'defense';

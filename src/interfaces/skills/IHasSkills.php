@@ -26,6 +26,11 @@ interface IHasSkills
     public function getSkill(string $skillName): ?ISkill;
 
     /**
+     * @return ISkill[]
+     */
+    public function getSkills(): array;
+
+    /**
      * @param string $skillName
      * @return bool
      */

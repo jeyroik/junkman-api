@@ -11,6 +11,9 @@ use junkman\interfaces\locations\ILocationAdjacent;
 /**
  * Class Location
  *
+ * @jsonrpc_method create
+ * @jsonrpc_method index
+ *
  * @package junkman\components\locations
  * @author jeyroik@gmail.com
  */

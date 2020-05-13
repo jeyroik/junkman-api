@@ -2,6 +2,7 @@
 namespace junkman\interfaces\skills;
 
 use extas\interfaces\IItem;
+use junkman\interfaces\IHasStories;
 use junkman\interfaces\IJunkman;
 
 /**
@@ -10,7 +11,7 @@ use junkman\interfaces\IJunkman;
  * @package junkman\interfaces\skills
  * @author jeyroik@gmail.com
  */
-interface ISkillDispatcher extends IItem
+interface ISkillDispatcher extends IItem, IHasStories
 {
     /**
      * @param IJunkman $junkman

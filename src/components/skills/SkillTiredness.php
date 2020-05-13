@@ -15,6 +15,16 @@ class SkillTiredness extends SkillDispatcher
     public const NAME = 'tiredness';
     public const FIELD__COST = 'cost';
 
+    protected array $stories = [
+        'hp damage' => [
+            'Усталость была такой, что даже ноги немного подкашивались...',
+            'Дышать стало как-то тяжело...а было ли легко?'
+        ],
+        'inc' => [
+            'Усталость подступила чуть ближе, совсем чуть-чуть - буквально в гланды.'
+        ]
+    ];
+
     /**
      * @param IJunkman|IExtensionHealth $junkman
      * @param IJunkman|null $enemy
@@ -30,11 +40,13 @@ class SkillTiredness extends SkillDispatcher
         if ($currentTiredness > 4) {
             $healthCost = round($currentTiredness/5);
             $junkman->decHealth($healthCost);
+            $this->tellRandomStory('hp damage');
         }
 
         $lostHealth = $junkman->getLostHealth();
         $tiredCost = round($lostHealth/5);
         $junkman->incProperty(static::NAME, $tiredCost);
+        $this->tellRandomStory('inc');
     }
 
     /**

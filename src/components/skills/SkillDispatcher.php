@@ -2,6 +2,7 @@
 namespace junkman\components\skills;
 
 use extas\components\Item;
+use junkman\components\THasStories;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\skills\ISkill;
 use junkman\interfaces\skills\ISkillDispatcher;
@@ -16,6 +17,16 @@ use junkman\interfaces\skills\ISkillDispatcher;
  */
 abstract class SkillDispatcher extends Item implements ISkillDispatcher
 {
+    use THasStories;
+
+    protected array $stories = [];
+
+    /**
+     * @param IJunkman $junkman
+     * @param ISkill $skill
+     * @param IJunkman|null $enemy
+     * @param array $args
+     */
     public function __invoke(IJunkman &$junkman, ISkill $skill, ?IJunkman &$enemy, array $args = []): void
     {
         $this->dispatch($junkman, $enemy, $args);
@@ -38,6 +49,8 @@ abstract class SkillDispatcher extends Item implements ISkillDispatcher
             );
         }
     }
+
+
 
     /**
      * @return int

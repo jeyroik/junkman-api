@@ -36,10 +36,6 @@
       "stage": "extas.install"
     },
     {
-      "class": "junkman\\components\\plugins\\junkman\\AttachDefaultSkills",
-      "stage": "extas.junkmen.create.before"
-    },
-    {
       "class": "extas\\components\\plugins\\PluginFieldsDefaults",
       "stage": "junkman.self.init"
     }
@@ -89,6 +85,16 @@
       "interface": "junkman\\interfaces\\extensions\\IExtensionStory",
       "subject": "*",
       "methods": ["tellStory", "getStory"]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionOccupied",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionOccupied",
+      "subject": "junkman.contents.item",
+      "methods": [
+        "incXOccupied", "incYOccupied", "incZOccupied",
+        "decXOccupied", "decYOccupied", "decZOccupied",
+        "incSizeOccupied", "decSizeOccupied"
+      ]
     }
   ],
   "junkman_locations": [
@@ -103,7 +109,7 @@
         },
         "f_max": {
           "name": "f_max",
-          "value": 99
+          "value": 50
         }
       },
       "adjacent_locations": {
@@ -135,6 +141,21 @@
       }
     }
   ],
+  "junkman_items": [
+    {
+      "name": "spike_thrower",
+      "title": "Гвоздомёт",
+      "description": "Внешне это довольно компактный агрегат оранжевого цвета с серой рукоятью. Кнопка выстрела, видимо, не исправна, т.к. нажимается с большим трудом и, судя по всему, каждый запуск лишь ухудшает положение. Эта штуковина продляет вашу жизнь исключительно укорачиванием чужой жизни. Вбивайте гвозди в чужой гроб, пока не вбили в ваш!",
+      "size_x": 2,
+      "size_y": 1,
+      "size_z": 1,
+      "weight": 1,
+      "value": 12,
+      "definition": "Первый гвоздь отнимает 1 ед. чужой жизни и добавляет вам 1 ед. усталости, каждый последующий - наносит на 1 ед. больше и прибавляет на 1 ед. больше усталости.",
+      "frequency": [1,5,10,15,20,25,30,35,40,45,50],
+      "skills": ["use_spike_thrower"]
+    }
+  ],
   "junkman_skills": [
     {
       "name": "rest",
@@ -142,6 +163,7 @@
       "description": "Позволяет восстановить силы",
       "definition": "Восстанавливает Х здоровья и уменьшает усталость на Х, где Х - значение регенерации",
       "class": "junkman\\components\\skills\\SkillRest",
+      "can_damage_another": false,
       "frequency": [],
       "parameters": {
         "default_health_regen": {
@@ -156,6 +178,7 @@
       "description": "Позволяет порыться в попытках найти хоть что-нибудь",
       "definition": "Позволяет найти дополнительные артефакты",
       "class": "junkman\\components\\skills\\SkillSearch",
+      "can_damage_another": false,
       "frequency": [],
       "parameters": {}
     },
@@ -165,23 +188,39 @@
       "description": "Усталость",
       "definition": "Каждые 5 ед. усталости отнимает 1 ед. жизни, каждые 5 отнятые ед. жизни увеличичвают усталость на 1 ед.",
       "class": "junkman\\components\\skills\\SkillTiredness",
+      "can_damage_another": false,
       "frequency": [],
       "parameters": {}
     },
     {
-      "name": "spike_thrower",
-      "title": "Гвоздомёт",
-      "description": "Внешне это довольно компактный агрегат оранжевого цвета с серой рукоятью. Кнопка выстрела, видимо, не исправна, т.к. нажимается с большим трудом и, судя по всему, каждый запуск лишь ухудшает положение. Эта штуковина продляет вашу жизнь исключительно укорачиванием чужой жизни. Вбивайте гвозди в чужой гроб, пока не вбили в ваш!",
+      "name": "punch",
+      "title": "Удар кулаком",
+      "description": "Если вас ударили по левой щеке, то подставьте правую...ногу, присядьте и бейте снизу.",
+      "definition": "Отнимает Х здоровья у цели, где Х - ваш уровень атаки.",
+      "class": "junkman\\components\\skills\\SkillPunch",
+      "can_damage_another": true,
+      "frequency": [],
+      "parameters": {}
+    },
+    {
+      "name": "kick",
+      "title": "Удар ногой",
+      "description": "Вы и по стене в упор попасть не можете, но попытайтесь пнуть соперника.",
+      "definition": "Отнимает Х здоровья у цели, где Х - ваш уровень атаки.",
+      "class": "junkman\\components\\skills\\SkillKick",
+      "can_damage_another": true,
+      "frequency": [],
+      "parameters": {}
+    },
+    {
+      "name": "use_spike_thrower",
+      "title": "Выстрелить из гвоздомёта",
+      "description": "Попытаться нажать на проржавевший курок и выпустить гвоздь в цель.",
       "definition": "Первый гвоздь отнимает 1 ед. чужой жизни и добавляет вам 1 ед. усталости, каждый последующий - наносит на 1 ед. больше и прибавляет на 1 ед. больше усталости.",
       "class": "junkman\\components\\skills\\SkillSpikeThrower",
-      "frequency": [1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95],
-      "parameters": {
-        "resource": {
-          "name": "resource",
-          "title": "12 гвоздей",
-          "value": 12
-        }
-      }
+      "frequency": [],
+      "can_damage_another": true,
+      "parameters": {}
     }
   ],
   "fields": [
@@ -195,6 +234,17 @@
         }
       },
       "value": "@oneof(butterfly_nii_stage_6_hall,butterfly_nii_cabinet_671)"
+    },
+    {
+      "name": "skills",
+      "type": "array",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": ["rest", "tiredness", "punch", "kick", "search"]
     },
     {
       "name": "parameters",
@@ -306,6 +356,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -359,6 +412,49 @@
       }
     },
     {
+      "name": "junkman.fight",
+      "title": "Junkman add skill",
+      "description": "Add a skill to a junkman",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanAddSkill",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "attacker_name": {
+              "type": "string"
+            },
+            "defender_name": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "story": {
+              "type": "string"
+            },
+            "attacker_name": {
+              "type": "string"
+            },
+            "attacker": {
+              "type": "string"
+            },
+            "defender_name": {
+              "type": "string"
+            },
+            "defender": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "junkman.skill.remove",
       "title": "Junkman remove skill",
       "description": "Remove a skill from a junkman",
@@ -382,6 +478,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -458,6 +557,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -531,6 +633,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -604,6 +709,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "current_title": {
               "type": "string"
             },
@@ -646,6 +754,9 @@
         "response": {
           "type": "array",
           "properties": {
+            "story": {
+              "type": "string"
+            },
             "current_title": {
               "type": "string"
             },

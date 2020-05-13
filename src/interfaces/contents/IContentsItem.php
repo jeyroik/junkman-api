@@ -1,35 +1,34 @@
 <?php
-namespace junkman\interfaces\skills;
+namespace junkman\interfaces\contents;
 
 use extas\interfaces\IHasClass;
 use extas\interfaces\IHasDescription;
 use extas\interfaces\IHasName;
+use extas\interfaces\IHasValue;
 use extas\interfaces\IItem;
 use extas\interfaces\samples\parameters\IHasSampleParameters;
 use junkman\interfaces\IHasDefinition;
 use junkman\interfaces\IHasFrequency;
+use junkman\interfaces\IHasSize;
+use junkman\interfaces\IHasWeight;
 
 /**
- * Interface ISkill
+ * Interface IContentsItem
  *
- * @package junkman\interfaces\skills
+ * @package junkman\interfaces\contents
  * @author jeyroik@gmail.com
  */
-interface ISkill extends
+interface IContentsItem extends
     IItem,
-    IHasName,
     IHasDescription,
+    IHasName,
     IHasClass,
     IHasSampleParameters,
+    IHasSize,
+    IHasWeight,
+    IHasValue,
     IHasFrequency,
     IHasDefinition
 {
-    public const SUBJECT = 'junkman.skill';
-
-    public const FIELD__CAN_DAMAGE_ANOTHER = 'can_damage_another';
-
-    /**
-     * @return bool
-     */
-    public function canDamageAnother(): bool;
+    public const SUBJECT = 'junkman.contents.item';
 }
