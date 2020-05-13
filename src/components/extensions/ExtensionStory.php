@@ -23,7 +23,7 @@ class ExtensionStory extends Extension implements IExtensionStory
      */
     public function tellStory(array $episodes): void
     {
-        self::$episodes[] = array_merge(self::$episodes, $episodes);
+        self::$episodes = array_merge(self::$episodes, $episodes);
     }
 
     /**
