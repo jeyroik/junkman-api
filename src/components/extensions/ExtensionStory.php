@@ -39,7 +39,7 @@ class ExtensionStory extends Extension implements IExtensionStory
      */
     protected function buildStory(): string
     {
-        if (!self::$story) {
+        if (!self::$story['text']) {
             $this->compileStory();
         } else {
             $hash = $this->getStoryHash();
