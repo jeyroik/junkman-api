@@ -7,6 +7,8 @@ use junkman\interfaces\skills\ISkill;
 /**
  * Class SkillSpikeThrower
  *
+ * @method tellStory(array $episodes)
+ *
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
  */
@@ -40,9 +42,23 @@ class SkillSpikeThrower extends SkillDispatcher
         if ($spikesCount) {
             $this->tiredness = $damage = (12 - $spikesCount + 1);
             $enemy->decProperty($enemy::PARAM__HEALTH, $damage);
+            if ($junkman->getName() == $enemy->getName()) {
+                $this->tellStory([
+                    'Вы, похоже, совсем съезали с катушек и шмальнули в себя гвоздём.',
+                    'Хотя в чём вас винить, да и кому?'
+                ]);
+            } else {
+                $this->tellStory([
+                    'Уау! Вот это залп! Прямо в брюхо этому ублюдку!'
+                ]);
+            }
             $thrower->setParameterValue('resource', $spikesCount-1);
             $junkman->removeSkill(static::NAME);
             $junkman->addSkill($thrower);
+        } else {
+            $this->tellStory([
+                'Ад мой в зад! Похоже, закончились гвозди! Или эта ренова просто сломалась...'
+            ]);
         }
     }
 
