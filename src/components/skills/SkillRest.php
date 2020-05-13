@@ -7,6 +7,8 @@ use junkman\interfaces\IJunkman;
 /**
  * Class SkillRest
  *
+ * @method tellStory(array $episodes)
+ *
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
  */
@@ -30,6 +32,10 @@ class SkillRest extends SkillDispatcher
         if (($curHp < $maxHp) || ($junkman->getParameterValue(SkillTiredness::NAME))) {
             $regen = $junkman->getCurrentHealthRegeneration();
             $this->regeneration($junkman, $maxHp, $curHp, $regen);
+        } else {
+            $this->tellStory([
+                'Вы и так в полном порядке, хватит нежиться и тащите свой зад на поиски.'
+            ]);
         }
 
         $this->junkman = $junkman;
@@ -54,14 +60,22 @@ class SkillRest extends SkillDispatcher
         if ($regen > ($maxHp - $curHp)) {
             $curHp = $maxHp;
             $junkman->setParameterValue($junkman::PARAM__HEALTH, $curHp);
+            $this->tellStory([
+                'Вы отлично отдохнули (а как иначе в погибшем мире?) и полностью восстановили свои силы.'
+            ]);
         } else {
             $junkman->incProperty($junkman::PARAM__HEALTH, $regen);
+            $this->tellStory([
+                'Вы немного отдохнули и как будто бы стало чуть легче дышать этим грязным воздухом.'
+            ]);
         }
 
         if ($junkman->getParameterValue(SkillTiredness::NAME) < $regen) {
             $junkman->setParameterValue(SkillTiredness::NAME, 0);
+            $this->tellStory(['Вся утсалость прошла, можно двигаться вперёд! Приключения впереди и бла-бла-бла.']);
         } else {
             $junkman->decProperty(SkillTiredness::NAME, $regen);
+            $this->tellStory(['Да и усталость чуть отступила, как путник от долгожданного источника.']);
         }
 
         $this->junkmanRepository()->update($junkman);

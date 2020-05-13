@@ -83,6 +83,12 @@
       "methods": [
         "moveToLocation"
       ]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionStory",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionStory",
+      "subject": "*",
+      "methods": ["tellStory", "getStory"]
     }
   ],
   "junkman_locations": [

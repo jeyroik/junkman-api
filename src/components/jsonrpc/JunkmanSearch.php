@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @method junkmanRepository()
  * @method skillRepository()
+ * @method getStory()
  *
  * @package junkman\components\jsonrpc
  * @author jeyroik@gmail.com
@@ -39,27 +40,23 @@ class JunkmanSearch extends OperationDispatcher
         if ($junkman) {
             try {
                 $junkman->useSkill(SkillSearch::NAME, $junkman, []);
-                return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
+                return $this->successResponse(
+                    $jsonRpcRequest->getId(),
+                    [
+                        'story' => $this->getStory(),
+                        'junkman' => $junkman->__toArray()
+                    ]
+                );
             } catch (\Exception $e) {
                 return $this->errorResponse(
                     $jsonRpcRequest->getId(),
-                    $e->getMessage(),
-                    400,
-                    [
-                        'junkman_name' => $junkmanName,
-                        'trace' => $e->getTraceAsString()
-                    ]
+                    $e->getMessage(), 400, ['junkman_name' => $junkmanName, 'trace' => $e->getTraceAsString()]
                 );
             }
         }
 
         return $this->errorResponse(
-            $jsonRpcRequest->getId(),
-            'Missed junkman',
-            404,
-            [
-                'junkman_name' => $junkmanName
-            ]
+            $jsonRpcRequest->getId(), 'Missed junkman', 404, ['junkman_name' => $junkmanName]
         );
     }
 

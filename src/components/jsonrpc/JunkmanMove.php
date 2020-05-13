@@ -53,6 +53,7 @@ class JunkmanMove extends OperationDispatcher
             }
 
             return $this->successResponse($jsonRpcRequest->getId(), [
+                'story' => 'Ухты! Новое такое же место, как и все остальные...',
                 'current_title' => $location->getTitle(),
                 'current_about' => $location->getDescription(),
                 'adjacent' => $adjacentLocations

@@ -45,6 +45,7 @@ class JunkmanWhere extends OperationDispatcher
             }
 
             return $this->successResponse($jsonRpcRequest->getId(), [
+                'story' => 'Вы огляделись вокруг...да, это ещё одно развлечение в этой заднице мира.',
                 'current_title' => $location->getTitle(),
                 'current_about' => $location->getDescription(),
                 'adjacent' => $adjacentLocations

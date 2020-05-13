@@ -26,6 +26,10 @@ class JunkmanRemoveSkill extends JunkmanAddSkill
     protected function doAction(IJunkman &$junkman, ISkill $skill)
     {
         $junkman->removeSkill($skill->getName());
+        $this->tellStory([
+            'Какая к чёрту история!? Вы просто лишили какого-то бродягу ещё одного навыка.',
+            'Теперь ему будет проще гнить в этом забытом всеми богами месте.'
+        ]);
     }
 
     /**

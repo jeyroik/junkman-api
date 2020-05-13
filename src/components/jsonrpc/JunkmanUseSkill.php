@@ -25,6 +25,10 @@ class JunkmanUseSkill extends JunkmanAddSkill
      */
     protected function doAction(IJunkman &$junkman, ISkill $skill)
     {
+        $this->tellStory([
+            'А почему бы и не попробовать что-нибудь...Например ' . $skill->getTitle() . '.',
+            'Отличное развлечение для погребённого заживо.'
+        ]);
         $junkman->useSkill($skill->getName(), $junkman, []);
     }
 

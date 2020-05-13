@@ -15,6 +15,8 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @method junkmanRepository()
  * @method skillRepository()
+ * @method getStory()
+ * @method tellStory(array $episodes)
  *
  * @package junkman\components\jsonrpc
  * @author jeyroik@gmail.com
@@ -40,7 +42,13 @@ class JunkmanAddSkill extends OperationDispatcher
 
         if ($junkman && $skill) {
             $this->doAction($junkman, $skill);
-            return $this->successResponse($jsonRpcRequest->getId(), $junkman->__toArray());
+            return $this->successResponse(
+                $jsonRpcRequest->getId(),
+                [
+                    'story' => $this->getStory(),
+                    'junkman' => $junkman->__toArray()
+                ]
+            );
         }
 
         return $this->errorResponse(
@@ -63,6 +71,10 @@ class JunkmanAddSkill extends OperationDispatcher
     protected function doAction(IJunkman &$junkman, ISkill $skill)
     {
         $junkman->addSkill($skill);
+        $this->tellStory([
+            'Нет никакой истории - вы просто добавили какой-то блуждающей душе ещё один навык.',
+            'Теперь ей будет веселее гнить в этом забытом всеми богами месте.'
+        ]);
     }
 
     /**
