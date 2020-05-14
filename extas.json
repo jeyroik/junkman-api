@@ -449,6 +449,94 @@
       }
     },
     {
+      "name": "junkman.item.use",
+      "title": "Use an item",
+      "description": "Use any item",
+      "method": "update",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanItemUse",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "junkman_name": {
+              "type": "string"
+            },
+            "item_name": {
+              "type": "string"
+            },
+            "apply_to_junkman": {
+              "type": "string"
+            },
+            "apply_to_item": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "story": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "skills": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "class": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "array",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "mixed"
+                    }
+                  }
+                }
+              }
+            },
+            "parameters": {
+              "type": "array",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "mixed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "junkman.fight",
       "title": "Junkman add skill",
       "description": "Add a skill to a junkman",
