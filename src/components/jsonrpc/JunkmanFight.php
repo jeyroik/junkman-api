@@ -56,7 +56,7 @@ class JunkmanFight extends OperationDispatcher
             );
         }
 
-        while (!$attacker->isDead() or !$defender->isDead()) {
+        while (!$attacker->isDead() and !$defender->isDead()) {
             $skills = $attacker->getSkills();
             foreach ($skills as $skill) {
                 if ($skill->canDamageAnother()) {
