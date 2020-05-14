@@ -234,6 +234,28 @@
   ],
   "fields": [
     {
+      "name": "contents_items",
+      "type": "array",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": []
+    },
+    {
+      "name": "contents_items_max",
+      "type": "int",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": 4
+    },
+    {
       "name": "location_name",
       "type": "string",
       "parameters": {
