@@ -112,7 +112,7 @@ class JunkmanItemUse extends OperationDispatcher
                 $applyTo->$action($item, $junkman);
                 $this->junkmanRepository()->update($applyTo);
             } catch (\Exception $e) {
-                throw new \Exception('Can not apply item');
+                throw new \Exception('Can not apply item: ' . $e->getMessage());
             }
         }
     }
