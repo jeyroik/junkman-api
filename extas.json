@@ -545,7 +545,7 @@
       "item_name": "",
       "item_class": "",
       "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanAddSkill",
+      "class": "junkman\\components\\jsonrpc\\JunkmanFight",
       "spec": {
         "request": {
           "type": "object",
