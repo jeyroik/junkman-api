@@ -14,9 +14,9 @@ use junkman\interfaces\stages\IStageJunkmanUseSkill;
 /**
  * Class Junkman
  *
- * @jsonrpc_field name:string
- * @jsonrpc_field title:string
- * @jsonrpc_field description:string
+ * @jsonrpc_request_field name:string
+ * @jsonrpc_request_field title:string
+ * @jsonrpc_request_field description:string
  *
  * @jsonrpc_method create
  * @jsonrpc_method index

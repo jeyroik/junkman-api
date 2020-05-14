@@ -31,7 +31,8 @@
       "class": [
         "junkman\\components\\plugins\\PluginInstallJunkmen",
         "junkman\\components\\plugins\\PluginInstallSkills",
-        "junkman\\components\\plugins\\PluginInstallLocations"
+        "junkman\\components\\plugins\\PluginInstallLocations",
+        "extas\\components\\plugins\\PluginInstallOptionsForInstaller"
       ],
       "stage": "extas.install"
     },
