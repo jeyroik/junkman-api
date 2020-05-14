@@ -14,7 +14,7 @@ use junkman\interfaces\IJunkman;
  */
 class SpikeThrower extends ItemDispatcher
 {
-    public const NAME = 'spike.thrower';
+    public const NAME = 'spike_thrower';
     public const PARAM__TINY_AS_A_SPIKE = 'tiny_as_a_spike';
 
     /**
