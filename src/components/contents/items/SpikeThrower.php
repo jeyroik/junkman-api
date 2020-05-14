@@ -38,7 +38,7 @@ class SpikeThrower extends ItemDispatcher
      */
     public function takenBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
     {
-        $junkman->setParameterValue(static::NAME, $item->getName());
+        $junkman->addParameterByValue(static::NAME, $item->getName());
         $junkman->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
     }
 
