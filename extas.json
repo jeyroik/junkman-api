@@ -24,6 +24,14 @@
     {
       "class": "junkman\\components\\locations\\LocationRepository",
       "interface": "locationRepository"
+    },
+    {
+      "class": "junkman\\components\\contents\\ContentsItemRepository",
+      "interface": "junkman\\interfaces\\contents\\IContentsItemRepository"
+    },
+    {
+      "class": "junkman\\components\\contents\\ContentsItemRepository",
+      "interface": "contentsItemRepository"
     }
   ],
   "plugins": [
@@ -32,7 +40,7 @@
         "junkman\\components\\plugins\\PluginInstallJunkmen",
         "junkman\\components\\plugins\\PluginInstallSkills",
         "junkman\\components\\plugins\\PluginInstallLocations",
-        "extas\\components\\plugins\\PluginInstallOptionsForInstaller"
+        "junkman\\components\\plugins\\PluginInstallContentsItems"
       ],
       "stage": "extas.install"
     },
