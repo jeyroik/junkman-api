@@ -104,6 +104,12 @@
         "decXOccupied", "decYOccupied", "decZOccupied",
         "incSizeOccupied", "decSizeOccupied"
       ]
+    },
+    {
+      "class": "junkman\\components\\extensions\\actions\\ActionJunkmanTake",
+      "interface": "junkman\\interfaces\\extensions\\actions\\IActionJunkmanTake",
+      "subject": "junkman.self",
+      "methods": ["take", "throw"]
     }
   ],
   "junkman_locations": [
