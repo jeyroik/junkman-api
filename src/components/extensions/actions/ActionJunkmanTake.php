@@ -4,6 +4,7 @@ namespace junkman\components\extensions\actions;
 use extas\components\extensions\Extension;
 use junkman\components\THasStories;
 use junkman\interfaces\contents\IContentsItem;
+use junkman\interfaces\contents\items\IItemTakenBy;
 use junkman\interfaces\extensions\actions\IActionJunkmanTake;
 use junkman\interfaces\extensions\IExtensionHealth;
 use junkman\interfaces\IJunkman;
@@ -48,7 +49,15 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
     public function take(IContentsItem $item, IJunkman $from, IJunkman &$junkman = null): void
     {
         if ($junkman->hasSpaceForContentsItem()) {
+            $dispatcher = $item->buildClassWithParameters([]);
+
+            if ($from->hasContentsItem($item->getName())) {
+                $from->removeContentsItem($item->getName());
+                $dispatcher($from, $item, ['action' => 'thrownBy', 'from' => $from]);
+            }
             $junkman->addContentsItem($item);
+
+            $dispatcher($junkman, $item, ['action' => 'takenBy', 'from' => $from]);
             $this->tellRandomStory('take_ok');
         } else {
             $this->tellRandomStory('take_fail');
@@ -64,6 +73,8 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
     {
         if ($junkman->hasContentsItem($item->getName())) {
             $junkman->removeContentsItem($item->getName());
+            $dispatcher = $item->buildClassWithParameters([]);
+            $dispatcher($junkman, $item, ['action' => 'thrownBy', 'from' => $from]);
         }
 
         if ($from->getLocation()->getName() != $junkman->getLocation()->getName()) {

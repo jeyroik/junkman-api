@@ -91,6 +91,7 @@ class JunkmanItemUse extends OperationDispatcher
             : $this->applyToItem($junkman, $item, $applyToItem, $action);
 
         $this->contentsItemRepository()->update($item);
+        $this->junkmanRepository()->update($junkman);
     }
 
     /**

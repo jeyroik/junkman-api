@@ -27,10 +27,20 @@ abstract class ItemDispatcher extends Item implements IItemDispatcher
      */
     public function __invoke(IJunkman &$junkman, IContentsItem $item, array $args = []): void
     {
-        $this->dispatch($junkman, $item, $args);
+        $action = $args['action'] ?? 'dispatch';
+        if (method_exists($this, $action)) {
+            $this->$action($junkman, $item, $args);
+        }
         $this->junkmanRepository()->update($junkman);
         $this->contentsItemRepository()->update($item);
     }
 
+    /**
+     * Unknown/Default action
+     *
+     * @param IJunkman $junkman
+     * @param IContentsItem $item
+     * @param array $args
+     */
     abstract protected function dispatch(IJunkman &$junkman, IContentsItem &$item, array $args = []): void;
 }

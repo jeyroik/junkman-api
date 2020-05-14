@@ -18,7 +18,7 @@ class SpikeThrower extends ItemDispatcher
     public const PARAM__TINY_AS_A_SPIKE = 'tiny_as_a_spike';
 
     /**
-     * Старьёвщик берёт гвоздомёт себе.
+     * Неизвестное действие или действие по умолчанию
      *
      * @param IJunkman $junkman
      * @param IContentsItem $item
@@ -26,8 +26,33 @@ class SpikeThrower extends ItemDispatcher
      */
     protected function dispatch(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
     {
+        $this->takenBy($junkman, $item, $args);
+    }
+
+    /**
+     * Старьёвщик берёт гвоздомёт себе.
+     *
+     * @param IJunkman $junkman
+     * @param IContentsItem $item
+     * @param array $args
+     */
+    public function takenBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
+    {
         $junkman->setParameterValue(static::NAME, $item->getName());
         $junkman->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
+    }
+
+    /**
+     * Старьёвщик выкинул гвоздомёт.
+     *
+     * @param IJunkman $junkman
+     * @param IContentsItem $item
+     * @param array $args
+     */
+    public function thrownBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
+    {
+        $junkman->setParameterValue(static::NAME, null);
+        $junkman->removeSkill(SkillSpikeThrower::NAME);
     }
 
     /**
