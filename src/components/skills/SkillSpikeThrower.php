@@ -16,7 +16,7 @@ use junkman\interfaces\IJunkman;
  */
 class SkillSpikeThrower extends SkillDispatcher
 {
-    public const NAME = 'spike_thrower';
+    public const NAME = 'use_spike_thrower';
 
     protected int $tiredness = 0;
     protected array $stories = [
