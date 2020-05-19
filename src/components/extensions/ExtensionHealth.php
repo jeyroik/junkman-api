@@ -2,6 +2,7 @@
 namespace junkman\components\extensions;
 
 use extas\components\extensions\Extension;
+use junkman\components\THasStories;
 use junkman\interfaces\extensions\IExtensionHealth;
 use junkman\interfaces\IJunkman;
 
@@ -15,6 +16,16 @@ use junkman\interfaces\IJunkman;
  */
 class ExtensionHealth extends Extension implements IExtensionHealth
 {
+    use THasStories;
+
+    protected array $stories = [
+        'dead' => [
+            'Гнилой мир и смерть получилась гнилая...',
+            'Конец.',
+            'Жизнь утекла сквозь пальцы опущенных рук.'
+        ]
+    ];
+
     /**
      * @param IJunkman|null $junkman
      * @return int
@@ -76,10 +87,12 @@ class ExtensionHealth extends Extension implements IExtensionHealth
      */
     public function decHealth(int $decrement, IJunkman &$junkman = null): IJunkman
     {
-        if ($this->getCurrentHealth($junkman) >= $decrement) {
+        if ($this->getCurrentHealth($junkman) > $decrement) {
             $junkman->decProperty($junkman::PARAM__HEALTH, $decrement);
         } else {
             $junkman->setParameterValue($junkman::PARAM__HEALTH, 0);
+            $this->junkmanRepository()->delete([IJunkman::FIELD__NAME => $junkman->getName()]);
+            $this->tellRandomStory('dead');
         }
 
         $this->junkmanRepository()->update($junkman);
