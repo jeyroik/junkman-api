@@ -8,6 +8,12 @@ use junkman\interfaces\IJunkman;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class JunkmanItems
+ * 
+ * @package junkman\components\expands\junkman
+ * @author jeyroik@gmail.com
+ */
 class JunkmanItems extends PluginExpandAbstract
 {
     /**
@@ -17,16 +23,29 @@ class JunkmanItems extends PluginExpandAbstract
      */
     protected function dispatch(IExpandingBox &$parent, RequestInterface $request, ResponseInterface $response)
     {
-        $data = $parent->getData();
-        $junkmen = $data['junkman_list'] ?? [];
+        $junkmen = $this->getJunkmanList($parent);
 
         foreach ($junkmen as &$junkman) {
-            $junkman[IJunkman::FIELD__CONTENTS_ITEMS] = $this->contentsItemRepository()->all([
+            $junkman[IJunkman::FIELD__CONTENTS_ITEMS] = [];
+            $items = $this->contentsItemRepository()->all([
                 IContentsItem::FIELD__PLAYER_NAME => $junkman[IJunkman::FIELD__NAME]
             ]);
+            foreach ($items as $item) {
+                $junkman[IJunkman::FIELD__CONTENTS_ITEMS][] = $item->__toArray();
+            }
         }
-        $data['junkman_list'] = $junkmen;
-        $parent->setData($data);
+        $parent->addToValue('junkman_list', $junkmen);
+    }
+
+    protected function getJunkmanList(IExpandingBox $parent)
+    {
+        $value = $parent->getValue([]);
+        if (!isset($value['junkman_list'])) {
+            $data = $parent->getData();
+            $value['junkman_list'] = $data['junkman_list'];
+        }
+
+        return $value['junkman_list'];
     }
 
     protected function getExpandName(): string
