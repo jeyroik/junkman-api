@@ -242,6 +242,7 @@
   ],
   "fields": [
     {
+      "id": "@uuid6",
       "name": "contents_items",
       "type": "array",
       "parameters": {
@@ -253,6 +254,7 @@
       "value": []
     },
     {
+      "id": "@uuid6",
       "name": "contents_items_max",
       "type": "int",
       "parameters": {
@@ -264,6 +266,7 @@
       "value": 4
     },
     {
+      "id": "@uuid6",
       "name": "location_name",
       "type": "string",
       "parameters": {
@@ -275,6 +278,7 @@
       "value": "@oneof(butterfly_nii_stage_6_hall,butterfly_nii_cabinet_671)"
     },
     {
+      "id": "@uuid6",
       "name": "skills",
       "type": "array",
       "parameters": {
@@ -286,6 +290,7 @@
       "value": ["rest", "tiredness", "punch", "kick", "search"]
     },
     {
+      "id": "@uuid6",
       "name": "parameters",
       "type": "array",
       "parameters": {
