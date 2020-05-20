@@ -462,16 +462,16 @@
         "request": {
           "type": "object",
           "properties": {
-            "junkman_name": {
+            "from_name": {
               "type": "string"
             },
             "item_name": {
               "type": "string"
             },
-            "apply_to_junkman": {
+            "to_name": {
               "type": "string"
             },
-            "apply_to_item": {
+            "to_item": {
               "type": "string"
             },
             "action": {

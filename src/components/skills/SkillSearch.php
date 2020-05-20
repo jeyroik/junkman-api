@@ -22,6 +22,12 @@ use junkman\interfaces\skills\ISkillDispatcher;
 class SkillSearch extends SkillDispatcher
 {
     public const NAME = 'search';
+    protected array $stories = [
+        'empty' => [
+            'Похоже, что здесь ничего нет, но можно ещё немного поискать...',
+            'Пусто. Ещё одно бесполезное место...или бесполезный вы в этом месте.'
+        ]
+    ];
 
     /**
      * @param IJunkman $junkman
@@ -56,12 +62,19 @@ class SkillSearch extends SkillDispatcher
         /**
          * @var IContentsItem[] $items
          */
-        $items = $this->contentsItemRepository()->all(['frequency' => $rand]);
-        foreach ($items as $item) {
-            $this->tellStory($this->getSearchStory($item));
-            $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
-            break;
+        $item = $this->contentsItemRepository()->one([
+            IContentsItem::FIELD__FREQUENCY => $rand,
+            IContentsItem::FIELD__PLAYER_NAME => ''
+        ]);
+        if (empty($item)) {
+            $this->tellRandomStory('empty');
         }
+
+        $item->setPlayerName($junkman->getLocation()->getName());
+        $this->contentsItemRepository()->update($item);
+        
+        $this->tellStory($this->getSearchStory($item));
+        $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
 
         return $this;
     }

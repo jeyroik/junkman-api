@@ -5,6 +5,7 @@ use extas\interfaces\IHasDescription;
 use extas\interfaces\IHasName;
 use extas\interfaces\IItem;
 use extas\interfaces\samples\parameters\IHasSampleParameters;
+use junkman\interfaces\IJunkman;
 
 /**
  * Interface ILocation
@@ -12,10 +13,8 @@ use extas\interfaces\samples\parameters\IHasSampleParameters;
  * @package junkman\interfaces\locations
  * @author jeyroik@gmail.com
  */
-interface ILocation extends IItem, IHasName, IHasDescription, IHasSampleParameters
+interface ILocation extends IJunkman
 {
-    public const SUBJECT = 'junkman.location';
-
     public const FIELD__ADJACENT_LOCATIONS = 'adjacent_locations';
 
     public const PARAM__FREQUENCY_MIN = 'f_min';

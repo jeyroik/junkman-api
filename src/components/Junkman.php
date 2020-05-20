@@ -14,7 +14,6 @@ use junkman\interfaces\stages\IStageJunkmanUseSkill;
 /**
  * Class Junkman
  *
- * @jsonrpc_request_field name:string
  * @jsonrpc_request_field title:string
  * @jsonrpc_request_field description:string
  *
@@ -41,7 +40,7 @@ class Junkman extends Player implements IJunkman
         $dispatcher = $subject->buildClassWithParameters();
         $dispatcher($this, $subject, ...$args);
 
-        foreach ($this->getPluginsByStage(IStageJunkmanUse::NAME__PREFIX. $stageSuffix) as $plugin) {
+        foreach ($this->getPluginsByStage(IStageJunkmanUse::NAME__PREFIX . $stageSuffix) as $plugin) {
             $plugin($this, $subject, ...$args);
         }
     }
@@ -85,7 +84,7 @@ class Junkman extends Player implements IJunkman
             $plugin($this, $increment);
         }
 
-        foreach ($this->getPluginsByStage('junkman.property.inc.'. $name) as $plugin) {
+        foreach ($this->getPluginsByStage('junkman.property.'. $name . '.inc') as $plugin) {
             $plugin($this, $increment);
         }
 
@@ -114,7 +113,7 @@ class Junkman extends Player implements IJunkman
             $plugin($this, $decrement);
         }
 
-        foreach ($this->getPluginsByStage('junkman.property.dec.'. $name) as $plugin) {
+        foreach ($this->getPluginsByStage('junkman.property.'. $name . '.dec') as $plugin) {
             $plugin($this, $decrement);
         }
 

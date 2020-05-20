@@ -4,6 +4,7 @@ namespace junkman\components\jsonrpc;
 use extas\components\jsonrpc\operations\OperationDispatcher;
 use junkman\interfaces\contents\IContentsItem;
 use junkman\interfaces\IJunkman;
+use junkman\interfaces\locations\ILocation;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -16,6 +17,7 @@ use Psr\Http\Message\ResponseInterface;
  *  apply_to_item
  *  action
  *
+ * @method locationRepository()
  * @method junkmanRepository()
  * @method contentsItemRepository()
  * @method getStory()
@@ -32,24 +34,23 @@ class JunkmanItemUse extends OperationDispatcher
     {
         $jsonRpcRequest = $this->convertPsrToJsonRpcRequest();
         $params = $jsonRpcRequest->getParams();
-        $junkmanName = $params['junkman_name'] ?? '';
+        $fromName = $params['from_name'] ?? '';
         $itemName = $params['item_name'] ?? '';
 
         /**
-         * @var IJunkman $junkman
          * @var IContentsItem $item
          */
-        $junkman = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $junkmanName]);
+        $from = $this->getFrom($fromName);
         $item = $this->contentsItemRepository()->one([IContentsItem::FIELD__NAME => $itemName]);
 
-        if ($junkman && $item) {
+        if ($from && $item) {
             try {
-                $this->doAction($junkman, $item, $params);
+                $this->doAction($from, $item, $params);
                 return $this->successResponse(
                     $jsonRpcRequest->getId(),
                     [
                         'story' => $this->getStory(),
-                        'junkman' => $junkman->__toArray()
+                        'junkman' => $from->__toArray()
                     ]
                 );
             } catch (\Exception $e) {
@@ -59,11 +60,11 @@ class JunkmanItemUse extends OperationDispatcher
 
         return $this->errorResponse(
             $jsonRpcRequest->getId(),
-            'Missed junkman or an item',
+            'Missed from or an item',
             404,
             [
-                'junkman_name' => $junkmanName,
-                'junkman' => $junkman ? $junkman->__toArray() : 'missed',
+                'from_name' => $fromName,
+                'from' => $from ? $from->__toArray() : 'missed',
                 'item_name' => $itemName,
                 'item' => $item ? $item->__toArray() : 'missed'
             ]
@@ -71,11 +72,26 @@ class JunkmanItemUse extends OperationDispatcher
     }
 
     /**
-     * @param IJunkman $junkman
+     * @param string $fromName
+     * @return IJunkman
+     */
+    protected function getFrom(string $fromName): IJunkman
+    {
+        $junkman = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $fromName]);
+
+        if (!$junkman) {
+            return $this->locationRepository()->one([ILocation::FIELD__NAME => $fromName]);
+        }
+
+        return $junkman;
+    }
+
+    /**
+     * @param IJunkman $from
      * @param IContentsItem $item
      * @param array $params
      */
-    protected function doAction(IJunkman &$junkman, IContentsItem $item, array $params)
+    protected function doAction(IJunkman &$from, IContentsItem $item, array $params)
     {
         $action = $params['action'] ?? '';
 
@@ -83,34 +99,33 @@ class JunkmanItemUse extends OperationDispatcher
             throw new \Exception('Missed action');
         }
 
-        $isApplyToJunkman = $params['apply_to_junkman'] ?? '';
-        $applyToItem = $params['apply_to_item'] ?? '';
+        $to = $params['to_name'] ?? '';
+        $applyToItem = $params['to_item'] ?? '';
 
-        $isApplyToJunkman
-            ? $this->applyToJunkman($junkman, $item, $isApplyToJunkman, $action)
-            : $this->applyToItem($junkman, $item, $applyToItem, $action);
+        $to
+            ? $this->applyToJunkman($from, $item, $to, $action)
+            : $this->applyToItem($from, $item, $applyToItem, $action);
 
         $this->contentsItemRepository()->update($item);
-        $this->junkmanRepository()->update($junkman);
+        $this->junkmanRepository()->update($from);
     }
 
     /**
-     * @param IJunkman $junkman
+     * @param IJunkman $from
      * @param IContentsItem $item
-     * @param string $applyTo
+     * @param string $to
      * @param string $action
      * @throws \Exception
      */
-    protected function applyToJunkman(IJunkman &$junkman, IContentsItem &$item, string $applyTo, string $action)
+    protected function applyToJunkman(IJunkman &$from, IContentsItem &$item, string $to, string $action)
     {
-        $applyTo = $applyTo == 'self'
-            ? $junkman
-            : $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $applyTo]);
+        $to = $this->junkmanRepository()->one([IJunkman::FIELD__NAME => $to]);
 
-        if ($applyTo) {
+        if ($to) {
             try {
-                $applyTo->$action($item, $junkman);
-                $this->junkmanRepository()->update($applyTo);
+                $to->$action($item, $from);
+                $this->junkmanRepository()->update($to);
+                ($to->getName() != $from->getName()) && $this->junkmanRepository()->update($from);
             } catch (\Exception $e) {
                 throw new \Exception('Can not apply item: ' . $e->getMessage());
             }
@@ -118,20 +133,20 @@ class JunkmanItemUse extends OperationDispatcher
     }
 
     /**
-     * @param IJunkman $junkman
+     * @param IJunkman $from
      * @param IContentsItem $item
-     * @param string $applyTo
+     * @param string $toItem
      * @param string $action
      * @throws \Exception
      */
-    protected function applyToItem(IJunkman &$junkman, IContentsItem &$item, string $applyTo, string $action)
+    protected function applyToItem(IJunkman &$from, IContentsItem &$item, string $toItem, string $action)
     {
-        $applyTo = $this->contentsItemRepository()->one([IContentsItem::FIELD__NAME => $applyTo]);
+        $toItem = $this->contentsItemRepository()->one([IContentsItem::FIELD__NAME => $toItem]);
 
-        if ($applyTo) {
+        if ($toItem) {
             try {
-                $applyTo->$action($item, $junkman);
-                $this->contentsItemRepository()->update($applyTo);
+                $toItem->$action($item, $from);
+                $this->contentsItemRepository()->update($toItem);
             } catch (\Exception $e) {
                 throw new \Exception('Can not apply item');
             }

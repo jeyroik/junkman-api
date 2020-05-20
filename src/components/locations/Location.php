@@ -1,10 +1,7 @@
 <?php
 namespace junkman\components\locations;
 
-use extas\components\Item;
-use extas\components\samples\parameters\THasSampleParameters;
-use extas\components\THasDescription;
-use extas\components\THasName;
+use junkman\components\Junkman;
 use junkman\interfaces\locations\ILocation;
 use junkman\interfaces\locations\ILocationAdjacent;
 
@@ -17,12 +14,8 @@ use junkman\interfaces\locations\ILocationAdjacent;
  * @package junkman\components\locations
  * @author jeyroik@gmail.com
  */
-class Location extends Item implements ILocation
+class Location extends Junkman implements ILocation
 {
-    use THasName;
-    use THasDescription;
-    use THasSampleParameters;
-
     /**
      * @return ILocationAdjacent[]
      */
@@ -66,6 +59,6 @@ class Location extends Item implements ILocation
      */
     protected function getSubjectForExtension(): string
     {
-        return static::SUBJECT;
+        return 'junkman.location';
     }
 }

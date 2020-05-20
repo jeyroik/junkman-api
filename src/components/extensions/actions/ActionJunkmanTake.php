@@ -4,7 +4,6 @@ namespace junkman\components\extensions\actions;
 use extas\components\extensions\Extension;
 use junkman\components\THasStories;
 use junkman\interfaces\contents\IContentsItem;
-use junkman\interfaces\contents\items\IItemTakenBy;
 use junkman\interfaces\extensions\actions\IActionJunkmanTake;
 use junkman\interfaces\extensions\IExtensionHealth;
 use junkman\interfaces\IJunkman;
@@ -23,7 +22,8 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
 
     protected array $stories = [
         'take_ok' => [
-            'Вы подобрали вещицу.'
+            'Вы подобрали вещицу.',
+            'Получилось-таки захапать вещицу себе.'
         ],
         'take_fail' => [
             'Харе! Больше нет места для вещей.',
@@ -44,20 +44,20 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
     /**
      * @param IContentsItem $item
      * @param IJunkman $from
-     * @param IJunkman|null $junkman
+     * @param IJunkman|null $to
      */
-    public function take(IContentsItem $item, IJunkman $from, IJunkman &$junkman = null): void
+    public function take(IContentsItem $item, IJunkman $from, IJunkman &$to = null): void
     {
-        if ($junkman->hasSpaceForContentsItem()) {
-            $dispatcher = $item->buildClassWithParameters([]);
+        if ($to->hasSpaceForContentsItem()) {
+            $dispatcher = $item->buildClassWithParameters();
 
             if ($from->hasContentsItem($item->getName())) {
                 $from->removeContentsItem($item->getName());
-                $dispatcher($from, $item, ['action' => 'thrownBy', 'from' => $from]);
+                $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
             }
-            $junkman->addContentsItem($item);
+            $to->addContentsItem($item);
 
-            $dispatcher($junkman, $item, ['action' => 'takenBy', 'from' => $from]);
+            $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
             $this->tellRandomStory('take_ok');
         } else {
             $this->tellRandomStory('take_fail');

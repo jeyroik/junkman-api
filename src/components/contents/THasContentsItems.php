@@ -36,8 +36,8 @@ trait THasContentsItems
      */
     public function addContentsItem(IContentsItem $item)
     {
-        $this->config[I::FIELD__CONTENTS_ITEMS] = $this->config[I::FIELD__CONTENTS_ITEMS] ?? [];
-        $this->config[I::FIELD__CONTENTS_ITEMS][] = $item->getName();
+        $item->setPlayerName($this->getName());
+        $this->contentsItemRepository()->update($item);
 
         foreach ($this->getPluginsByStage($this->getSubjectForExtension() . '.contents.item.added') as $plugin) {
             $plugin($this, $item);
@@ -60,8 +60,9 @@ trait THasContentsItems
      */
     public function getContentsItems(): array
     {
-        $itemsNames = $this->config[I::FIELD__CONTENTS_ITEMS] ?? [];
-        return $this->contentsItemRepository()->all([IContentsItem::FIELD__NAME => $itemsNames]);
+        return $this->contentsItemRepository()->all([
+            IContentsItem::FIELD__PLAYER_NAME => $this->getName()
+        ]);
     }
 
     /**
@@ -83,9 +84,12 @@ trait THasContentsItems
      */
     public function hasContentsItem(string $itemName): bool
     {
-        $items = $this->config[I::FIELD__CONTENTS_ITEMS] ?? [];
+        $item = $this->contentsItemRepository()->one([
+            IContentsItem::FIELD__NAME => $itemName,
+            IContentsItem::FIELD__PLAYER_NAME => $this->getName()
+        ]);
 
-        return in_array($itemName, $items);
+        return $item ? true : false;
     }
 
     /**
@@ -95,10 +99,14 @@ trait THasContentsItems
     public function removeContentsItem(string $itemName)
     {
         if ($this->hasContentsItem($itemName)) {
-            $items = $this->config[I::FIELD__CONTENTS_ITEMS] ?? [];
-            $byName = array_flip($items);
-            unset($byName[$itemName]);
-            $this->config[I::FIELD__CONTENTS_ITEMS] = array_keys($byName);
+            $item = $this->getContentsItem($itemName);
+            $item->setPlayerName('');
+            $this->contentsItemRepository()->update($item);
+
+            $stage = 'contents.item.removed';
+            foreach ($this->getPluginsByStage($stage) as $plugin) {
+                $plugin($this, $itemName);
+            }
 
             $stage = $this->getSubjectForExtension() . '.contents.item.removed';
             foreach ($this->getPluginsByStage($stage) as $plugin) {

@@ -6,6 +6,7 @@ use extas\interfaces\IHasDescription;
 use extas\interfaces\IHasName;
 use extas\interfaces\IHasValue;
 use extas\interfaces\IItem;
+use extas\interfaces\players\IHasPlayer;
 use extas\interfaces\samples\parameters\IHasSampleParameters;
 use junkman\interfaces\IHasDefinition;
 use junkman\interfaces\IHasFrequency;
@@ -28,7 +29,8 @@ interface IContentsItem extends
     IHasWeight,
     IHasValue,
     IHasFrequency,
-    IHasDefinition
+    IHasDefinition,
+    IHasPlayer
 {
     public const SUBJECT = 'junkman.contents.item';
 }

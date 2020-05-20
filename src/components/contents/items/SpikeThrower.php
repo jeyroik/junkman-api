@@ -16,6 +16,16 @@ class SpikeThrower extends ItemDispatcher
 {
     public const NAME = 'spike_thrower';
     public const PARAM__TINY_AS_A_SPIKE = 'tiny_as_a_spike';
+    protected array $stories = [
+        'throw' => [
+            'Наконец-то вы избавились от хлама.',
+            'Гвоздомёт выпал из ваших рук и вы почувствовали большое облегчение, пальцы перестали зудеть.',
+            '@junkman молча выбросил гвоздомёт на пол.'
+        ],
+        'take' => [
+            'Вы обоими руками обхватили ручки гвоздомёта. В нём чувствуется мощь и бесполезность.'
+        ]
+    ];
 
     /**
      * Неизвестное действие или действие по умолчанию
@@ -38,21 +48,22 @@ class SpikeThrower extends ItemDispatcher
      */
     public function takenBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
     {
-        $junkman->addParameterByValue(static::NAME, $item->getName());
+        $junkman->addContentsItem($item);
         $junkman->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
     }
 
     /**
      * Старьёвщик выкинул гвоздомёт.
      *
-     * @param IJunkman $junkman
-     * @param IContentsItem $item
+     * @param IJunkman $from
+     * @param IContentsItem $spikeThrower
      * @param array $args
      */
-    public function thrownBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
+    public function thrownBy(IJunkman &$from, IContentsItem &$spikeThrower, array $args = []): void
     {
-        $junkman->setParameterValue(static::NAME, null);
-        $junkman->removeSkill(SkillSpikeThrower::NAME);
+        $from->removeContentsItem($spikeThrower->getName());
+        $from->removeSkill(SkillSpikeThrower::NAME);
+        $this->tellRandomStory('throw', ['junkman' => $from->getTitle()]);
     }
 
     /**

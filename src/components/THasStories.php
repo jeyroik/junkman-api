@@ -1,6 +1,8 @@
 <?php
 namespace junkman\components;
 
+use extas\components\Replace;
+
 /**
  * Trait THasAStories
  *
@@ -15,9 +17,11 @@ trait THasStories
     /**
      * @param string $storyTag
      */
-    public function tellRandomStory(string $storyTag): void
+    public function tellRandomStory(string $storyTag, array $replaces = []): void
     {
-        $this->tellStory($this->getStoryOnOf($storyTag));
+        $story = $this->getStoryOnOf($storyTag);
+        $realStory = Replace::please()->apply($replaces)->to($story);
+        $this->tellStory($realStory);
     }
 
     /**

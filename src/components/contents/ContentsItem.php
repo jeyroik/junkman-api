@@ -2,6 +2,7 @@
 namespace junkman\components\contents;
 
 use extas\components\Item;
+use extas\components\players\THasPlayer;
 use extas\components\samples\parameters\THasSampleParameters;
 use extas\components\THasClass;
 use extas\components\THasDescription;
@@ -36,6 +37,7 @@ class ContentsItem extends Item implements IContentsItem
     use THasValue;
     use THasFrequency;
     use THasDefinition;
+    use THasPlayer;
 
     /**
      * @return string
