@@ -51,25 +51,59 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
      */
     public function take(IContentsItem $item, IJunkman $from, IJunkman &$to = null): void
     {
+        try {
+            $this->hasItem($from, $item);
+            $this->isCloseEnough($from, $to);
+            $this->hasEnoughSpace($to);
+
+            $dispatcher = $item->buildClassWithParameters();
+            $from->removeContentsItem($item->getName());
+            $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
+
+            $to->addContentsItem($item);
+            $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
+
+            $this->tellRandomStory('take_ok');
+        } catch (\Exception $e) {
+
+        }
+    }
+
+    /**
+     * @param IJunkman $to
+     * @throws \Exception
+     */
+    protected function hasEnoughSpace(IJunkman $to): void
+    {
+        if (!$to->hasSpaceForContentsItem()) {
+            $this->tellRandomStory('take_fail');
+            throw new \Exception('Has not enough space');
+        }
+    }
+
+    /**
+     * @param IJunkman $from
+     * @param IContentsItem $item
+     * @throws \Exception
+     */
+    protected function hasItem(IJunkman $from, IContentsItem $item): void
+    {
+        if (!$from->hasContentsItem($item->getName())) {
+            $this->tellRandomStory('has_not');
+            throw new \Exception('Has not item');
+        }
+    }
+
+    /**
+     * @param IJunkman $from
+     * @param IJunkman $to
+     * @throws \Exception
+     */
+    protected function isCloseEnough(IJunkman $from, IJunkman $to): void
+    {
         if ($from->getLocation()->getName() != $to->getLocation()->getName()) {
             $this->tellRandomStory('throw_far');
-        } else {
-            if ($to->hasSpaceForContentsItem()) {
-                $dispatcher = $item->buildClassWithParameters();
-
-                if ($from->hasContentsItem($item->getName())) {
-                    $from->removeContentsItem($item->getName());
-                    $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
-                    $to->addContentsItem($item);
-
-                    $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
-                    $this->tellRandomStory('take_ok');
-                } else {
-                    $this->tellRandomStory('has_not');
-                }
-            } else {
-                $this->tellRandomStory('take_fail');
-            }
+            throw new \Exception('Too far');
         }
     }
 
