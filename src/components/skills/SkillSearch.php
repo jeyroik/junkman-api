@@ -68,14 +68,15 @@ class SkillSearch extends SkillDispatcher
         ]);
         if (empty($item)) {
             $this->tellRandomStory('empty');
+        } else {
+
+            $item->setPlayerName($junkman->getLocation()->getName());
+            $this->contentsItemRepository()->update($item);
+
+            $this->tellStory($this->getSearchStory($item));
+            $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
         }
-
-        $item->setPlayerName($junkman->getLocation()->getName());
-        $this->contentsItemRepository()->update($item);
         
-        $this->tellStory($this->getSearchStory($item));
-        $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
-
         return $this;
     }
 
