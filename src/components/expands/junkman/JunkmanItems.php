@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class JunkmanItems
- * 
+ *
  * @package junkman\components\expands\junkman
  * @author jeyroik@gmail.com
  */

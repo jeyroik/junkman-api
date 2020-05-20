@@ -38,6 +38,9 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
         ],
         'throw_another' => [
             'Странный способ выражать свои эмоции, но дело ваше...'
+        ],
+        'has_not' => [
+            'Какая-то неправомерная передача вещи. Она точно находится по адресу?'
         ]
     ];
 
@@ -54,11 +57,13 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
             if ($from->hasContentsItem($item->getName())) {
                 $from->removeContentsItem($item->getName());
                 $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
-            }
-            $to->addContentsItem($item);
+                $to->addContentsItem($item);
 
-            $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
-            $this->tellRandomStory('take_ok');
+                $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
+                $this->tellRandomStory('take_ok');
+            } else {
+                $this->tellRandomStory('has_not');
+            }
         } else {
             $this->tellRandomStory('take_fail');
         }
