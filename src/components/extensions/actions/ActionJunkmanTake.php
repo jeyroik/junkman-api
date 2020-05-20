@@ -51,21 +51,25 @@ class ActionJunkmanTake extends Extension implements IActionJunkmanTake
      */
     public function take(IContentsItem $item, IJunkman $from, IJunkman &$to = null): void
     {
-        if ($to->hasSpaceForContentsItem()) {
-            $dispatcher = $item->buildClassWithParameters();
-
-            if ($from->hasContentsItem($item->getName())) {
-                $from->removeContentsItem($item->getName());
-                $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
-                $to->addContentsItem($item);
-
-                $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
-                $this->tellRandomStory('take_ok');
-            } else {
-                $this->tellRandomStory('has_not');
-            }
+        if ($from->getLocation()->getName() != $to->getLocation()->getName()) {
+            $this->tellRandomStory('throw_far');
         } else {
-            $this->tellRandomStory('take_fail');
+            if ($to->hasSpaceForContentsItem()) {
+                $dispatcher = $item->buildClassWithParameters();
+
+                if ($from->hasContentsItem($item->getName())) {
+                    $from->removeContentsItem($item->getName());
+                    $dispatcher($from, $item, ['action' => 'lostBy', 'to' => $to]);
+                    $to->addContentsItem($item);
+
+                    $dispatcher($to, $item, ['action' => 'takenBy', 'from' => $from]);
+                    $this->tellRandomStory('take_ok');
+                } else {
+                    $this->tellRandomStory('has_not');
+                }
+            } else {
+                $this->tellRandomStory('take_fail');
+            }
         }
     }
 
