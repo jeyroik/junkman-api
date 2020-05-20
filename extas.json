@@ -169,7 +169,8 @@
       "definition": "Первый гвоздь отнимает 1 ед. чужой жизни и добавляет вам 1 ед. усталости, каждый последующий - наносит на 1 ед. больше и прибавляет на 1 ед. больше усталости.",
       "frequency": [1,5,10,15,20,25,30,35,40,45,50],
       "skills": ["use_spike_thrower"],
-      "class": "junkman\\components\\contents\\items\\SpikeThrower"
+      "class": "junkman\\components\\contents\\items\\SpikeThrower",
+      "player_name": ""
     }
   ],
   "junkman_skills": [

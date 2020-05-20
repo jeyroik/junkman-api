@@ -76,7 +76,7 @@ class SkillSearch extends SkillDispatcher
             $this->tellStory($this->getSearchStory($item));
             $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
         }
-        
+
         return $this;
     }
 
