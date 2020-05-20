@@ -24,7 +24,7 @@ trait THasContentsItems
      */
     public function hasSpaceForContentsItem(): bool
     {
-        $items = $this->config[I::FIELD__CONTENTS_ITEMS] ?? [];
+        $items = $this->getContentsItems();
         $max = $this->config[I::FIELD__CONTENTS_ITEMS_MAX] ?? 0;
 
         return $max > count($items);
@@ -42,6 +42,8 @@ trait THasContentsItems
         foreach ($this->getPluginsByStage($this->getSubjectForExtension() . '.contents.item.added') as $plugin) {
             $plugin($this, $item);
         }
+
+        $this->decContentsItemsMax();
 
         return $this;
     }
@@ -117,6 +119,8 @@ trait THasContentsItems
             foreach ($this->getPluginsByStage($stage) as $plugin) {
                 $plugin($this, $itemName);
             }
+
+            $this->incContentsItemsMax();
         }
 
         return $this;
@@ -133,5 +137,44 @@ trait THasContentsItems
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getContentsItemsMax(): int
+    {
+        return $this->config[I::FIELD__CONTENTS_ITEMS_MAX] ?? 0;
+    }
+
+    /**
+     * @param int $max
+     * @return $this
+     */
+    public function setContentsItemsMax(int $max)
+    {
+        $this->config[I::FIELD__CONTENTS_ITEMS_MAX] = $max;
+
+        return $this;
+    }
+
+    /**
+     * @param int $increment
+     * @return $this
+     */
+    public function incContentsItemsMax(int $increment = 1)
+    {
+        $this->setContentsItemsMax($this->getContentsItemsMax() + $increment);
+
+        return $this;
+    }
+
+    /**
+     * @param int $decrement
+     * @return THasContentsItems
+     */
+    public function decContentsItemsMax(int $decrement = 1)
+    {
+        return $this->incContentsItemsMax(-$decrement);
     }
 }

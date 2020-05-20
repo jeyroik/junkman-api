@@ -47,6 +47,10 @@
     {
       "class": "extas\\components\\plugins\\PluginFieldsDefaults",
       "stage": "junkman.self.init"
+    },
+    {
+      "class": "extas\\components\\expands\\junkman\\JunkmanItems",
+      "stage": "expand.index.junkman"
     }
   ],
   "extensions": [
