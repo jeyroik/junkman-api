@@ -7,11 +7,14 @@ use junkman\interfaces\IJunkman;
 use junkman\interfaces\locations\ILocation;
 use junkman\interfaces\skills\ISkill;
 use junkman\interfaces\skills\ISkillDispatcher;
+use junkman\interfaces\skills\ISkillSample;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class SkillSearch
  *
  * @method skillRepository()
+ * @method skillSampleRepository()
  * @method contentsItemRepository()
  * @method junkmanRepository()
  * @method tellStory(array $episodes)
@@ -26,6 +29,11 @@ class SkillSearch extends SkillDispatcher
         'empty' => [
             'Похоже, что здесь ничего нет, но можно ещё немного поискать...',
             'Пусто. Ещё одно бесполезное место...или бесполезный вы в этом месте.'
+        ],
+        'skill.found' => [
+            'Что-то пробуждается внутри вас. Похоже, что это @skill.title.'
+            . 'Если хочется развить это, то используйте заклинание @skill.name.',
+            'Появилось ощущение, что вы можете узнать про @skill.title. Позовите это ощущение по имени @skill.name.'
         ]
     ];
 
@@ -60,7 +68,7 @@ class SkillSearch extends SkillDispatcher
         }
 
         /**
-         * @var IContentsItem[] $items
+         * @var IContentsItem $item
          */
         $item = $this->contentsItemRepository()->one([
             IContentsItem::FIELD__FREQUENCY => $rand,
@@ -69,12 +77,12 @@ class SkillSearch extends SkillDispatcher
         if (empty($item)) {
             $this->tellRandomStory('empty');
         } else {
-
             $item->setPlayerName($junkman->getLocation()->getName());
+            $item->setHash(Uuid::uuid6());
             $this->contentsItemRepository()->update($item);
 
             $this->tellStory($this->getSearchStory($item));
-            $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getName()]);
+            $this->tellStory(['Чтобы подобрать эту вещицу, используйте её особый признак: ' . $item->getHash()]);
         }
 
         return $this;
@@ -90,14 +98,9 @@ class SkillSearch extends SkillDispatcher
         /**
          * @var ISkill[] $skills
          */
-        $skills = $this->skillRepository()->all(['frequency' => $rand]);
+        $skills = $this->skillSampleRepository()->all([ISkillSample::FIELD__FREQUENCY => $rand]);
         foreach ($skills as $skill) {
-            if (!$junkman->hasSkill($skill->getName())) {
-                $junkman->addSkill($skill);
-                $this->tellStory($this->getSearchStory($skill));
-                $this->junkmanRepository()->update($junkman);
-                break;
-            }
+            $this->tellRandomStory('skill.found', ['skill' => $skill]);
         }
 
         return $this;

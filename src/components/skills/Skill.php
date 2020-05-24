@@ -1,13 +1,8 @@
 <?php
 namespace junkman\components\skills;
 
-use extas\components\Item;
-use extas\components\samples\parameters\THasSampleParameters;
-use extas\components\THasClass;
-use extas\components\THasDescription;
-use extas\components\THasName;
-use junkman\components\THasDefinition;
-use junkman\components\THasFrequency;
+use extas\components\samples\THasSample;
+use junkman\components\using\TCanUse;
 use junkman\interfaces\skills\ISkill;
 
 /**
@@ -19,14 +14,10 @@ use junkman\interfaces\skills\ISkill;
  * @package junkman\components\skills
  * @author jeyroik@gmail.com
  */
-class Skill extends Item implements ISkill
+class Skill extends SkillSample implements ISkill
 {
-    use THasName;
-    use THasDescription;
-    use THasClass;
-    use THasSampleParameters;
-    use THasFrequency;
-    use THasDefinition;
+    use THasSample;
+    use TCanUse;
 
     /**
      * @return string

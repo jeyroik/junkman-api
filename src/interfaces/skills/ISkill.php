@@ -1,13 +1,8 @@
 <?php
 namespace junkman\interfaces\skills;
 
-use extas\interfaces\IHasClass;
-use extas\interfaces\IHasDescription;
-use extas\interfaces\IHasName;
-use extas\interfaces\IItem;
-use extas\interfaces\samples\parameters\IHasSampleParameters;
-use junkman\interfaces\IHasDefinition;
-use junkman\interfaces\IHasFrequency;
+use extas\interfaces\samples\IHasSample;
+use junkman\interfaces\using\ICanUse;
 
 /**
  * Interface ISkill
@@ -15,14 +10,7 @@ use junkman\interfaces\IHasFrequency;
  * @package junkman\interfaces\skills
  * @author jeyroik@gmail.com
  */
-interface ISkill extends
-    IItem,
-    IHasName,
-    IHasDescription,
-    IHasClass,
-    IHasSampleParameters,
-    IHasFrequency,
-    IHasDefinition
+interface ISkill extends ISkillSample, IHasSample, ICanUse
 {
     public const SUBJECT = 'junkman.skill';
 

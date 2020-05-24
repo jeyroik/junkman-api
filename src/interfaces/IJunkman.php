@@ -7,6 +7,8 @@ use extas\interfaces\samples\parameters\IHasSampleParameters;
 use junkman\interfaces\contents\IHasContentsItems;
 use junkman\interfaces\locations\IHasLocation;
 use junkman\interfaces\skills\IHasSkills;
+use junkman\interfaces\using\ICanBeUsed;
+use junkman\interfaces\using\ICanUse;
 
 /**
  * Interface IJunkman
@@ -14,7 +16,14 @@ use junkman\interfaces\skills\IHasSkills;
  * @package junkman\interfaces
  * @author jeyroik@gmail.com
  */
-interface IJunkman extends IPlayer, IHasSampleParameters, IHasLocation, IHasSkills, IHasContentsItems
+interface IJunkman extends
+    IPlayer,
+    IHasSampleParameters,
+    IHasLocation,
+    IHasSkills,
+    IHasContentsItems,
+    ICanUse,
+    ICanBeUsed
 {
     public const PARAM__HEALTH = 'health';
     public const PARAM__HEALTH_MAX = 'health_max';

@@ -10,7 +10,7 @@ use junkman\interfaces\contents\IHasContentsItems as I;
  * 
  * @property array $config
  * @method contentsItemRepository()
- * @method getPluginsByStage(string $stage)
+ * @method getPluginsByStage(string $stage, array $config = [])
  * @method getSubjectForExtension(): string
  * @method use(IHasClass $subject, string $stageSuffix, ...$args): void
  * 

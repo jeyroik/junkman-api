@@ -1,21 +1,31 @@
 <?php
 namespace junkman\components\contents\items;
 
+use extas\components\plugins\Plugin;
 use junkman\components\skills\Skill;
 use junkman\components\skills\SkillSpikeThrower;
+use junkman\components\THasStories;
 use junkman\interfaces\contents\IContentsItem;
 use junkman\interfaces\IJunkman;
+use junkman\interfaces\using\ICanUse;
 
 /**
  * Class SpikeThrower
  *
+ * @method contentsItemRepository()
+ *
  * @package junkman\components\contents\items
  * @author jeyroik@gmail.com
  */
-class SpikeThrower extends ItemDispatcher
+class SpikeThrower extends Plugin
 {
+    use THasStories;
+
     public const NAME = 'spike_thrower';
     public const PARAM__TINY_AS_A_SPIKE = 'tiny_as_a_spike';
+
+    public const ARG__SPIKE = 'spike';
+
     protected array $stories = [
         'throw' => [
             'Наконец-то вы избавились от хлама.',
@@ -24,62 +34,58 @@ class SpikeThrower extends ItemDispatcher
         ],
         'take' => [
             'Вы обоими руками обхватили ручки гвоздомёта. В нём чувствуется мощь и бесполезность.'
+        ],
+        'missed_spike' => [
+            'А что заряжать-то будем? [Передайте в args в параметре ' . self::ARG__SPIKE . ' name гвоздя]'
+        ],
+        'too_big' => [
+            'Это слишком крупная фигня, попробуйте найти что-нибудь по-меньше. [Ищите вещи с параметром '
+            . self::PARAM__TINY_AS_A_SPIKE . ']'
         ]
     ];
 
     /**
-     * Неизвестное действие или действие по умолчанию
-     *
-     * @param IJunkman $junkman
-     * @param IContentsItem $item
-     * @param array $args
-     */
-    protected function dispatch(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
-    {
-        $this->takenBy($junkman, $item, $args);
-    }
-
-    /**
-     * Старьёвщик берёт гвоздомёт себе.
-     *
-     * @param IJunkman $junkman
-     * @param IContentsItem $item
-     * @param array $args
-     */
-    public function takenBy(IJunkman &$junkman, IContentsItem &$item, array $args = []): void
-    {
-        $junkman->addContentsItem($item);
-        $junkman->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
-    }
-
-    /**
-     * Старьёвщик выкинул гвоздомёт.
-     *
-     * @param IJunkman $from
      * @param IContentsItem $spikeThrower
-     * @param array $args
+     * @param ICanUse $owner
      */
-    public function thrownBy(IJunkman &$from, IContentsItem &$spikeThrower, array $args = []): void
+    public function forTake(IContentsItem &$spikeThrower, ICanUse &$owner): void
     {
-        $from->removeContentsItem($spikeThrower->getName());
-        $from->removeSkill(SkillSpikeThrower::NAME);
-        $this->tellRandomStory('throw', ['junkman' => $from->getTitle()]);
+        if ($owner instanceof IJunkman) {
+            $owner->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
+            $this->tellRandomStory('take');
+        }
     }
 
     /**
-     * Старьёвщик пытается что-то зарядить в гвоздомёт.
-     *
-     * @param IJunkman $junkman
-     * @param IContentsItem $thrower
-     * @param IContentsItem $item
+     * @param IContentsItem $spikeThrower
+     * @param ICanUse $owner
      */
-    public function load(IJunkman &$junkman, IContentsItem $thrower, IContentsItem $item)
+    public function load(IContentsItem &$spikeThrower, ICanUse &$owner): void
     {
-        $tinyAsASpike = $item->getParameterValue(static::PARAM__TINY_AS_A_SPIKE, false);
-        if ($tinyAsASpike) {
-            $thrower->setValue($thrower->getValue() + 1);
-            $junkman->removeContentsItem($item->getName());
+        $spike = $this->getSpike();
+
+        if (!$spike) {
+            $this->tellRandomStory('missed_spike');
+        } else {
+            $tinyAsASpike = $spike->getParameterValue(static::PARAM__TINY_AS_A_SPIKE, false);
+            if ($tinyAsASpike) {
+                $spikeThrower->setValue($spikeThrower->getValue() + 1);
+                $this->contentsItemRepository()->delete([IContentsItem::FIELD__NAME => $spike->getName()]);
+            }
         }
+    }
+
+    /**
+     * @return IContentsItem|null
+     */
+    protected function getSpike(): ?IContentsItem
+    {
+        $spike = $this->config[static::ARG__SPIKE] ?? '';
+        if ($spike) {
+            return $this->contentsItemRepository()->one([IContentsItem::FIELD__NAME => $spike]);
+        }
+
+        return null;
     }
 
     /**

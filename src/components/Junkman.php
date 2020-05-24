@@ -3,10 +3,13 @@ namespace junkman\components;
 
 use extas\components\players\Player;
 use extas\components\samples\parameters\THasSampleParameters;
+use extas\components\THasClass;
 use extas\interfaces\IHasClass;
 use junkman\components\contents\THasContentsItems;
 use junkman\components\locations\THasLocation;
 use junkman\components\skills\THasSkills;
+use junkman\components\using\TCanBeUsed;
+use junkman\components\using\TCanUse;
 use junkman\interfaces\IJunkman;
 use junkman\interfaces\stages\IStageJunkmanUse;
 use junkman\interfaces\stages\IStageJunkmanUseSkill;
@@ -29,6 +32,9 @@ class Junkman extends Player implements IJunkman
     use THasSkills;
     use THasLocation;
     use THasContentsItems;
+    use TCanUse;
+    use TCanBeUsed;
+    use THasClass;
 
     /**
      * @param IHasClass $subject

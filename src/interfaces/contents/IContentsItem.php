@@ -1,17 +1,16 @@
 <?php
 namespace junkman\interfaces\contents;
 
-use extas\interfaces\IHasClass;
-use extas\interfaces\IHasDescription;
-use extas\interfaces\IHasName;
+use extas\interfaces\IDispatcherWrapper;
 use extas\interfaces\IHasValue;
 use extas\interfaces\IItem;
 use extas\interfaces\players\IHasPlayer;
 use extas\interfaces\samples\parameters\IHasSampleParameters;
 use junkman\interfaces\IHasDefinition;
 use junkman\interfaces\IHasFrequency;
-use junkman\interfaces\IHasSize;
-use junkman\interfaces\IHasWeight;
+use junkman\interfaces\IHasShape;
+use junkman\interfaces\using\ICanBeUsed;
+use junkman\interfaces\using\ICanUse;
 
 /**
  * Interface IContentsItem
@@ -21,16 +20,28 @@ use junkman\interfaces\IHasWeight;
  */
 interface IContentsItem extends
     IItem,
-    IHasDescription,
-    IHasName,
-    IHasClass,
+    IDispatcherWrapper,
     IHasSampleParameters,
-    IHasSize,
-    IHasWeight,
+    IHasShape,
     IHasValue,
     IHasFrequency,
     IHasDefinition,
-    IHasPlayer
+    IHasPlayer,
+    ICanBeUsed,
+    ICanUse
 {
     public const SUBJECT = 'junkman.contents.item';
+
+    public const FIELD__HASH = 'hash';
+
+    /**
+     * @return string
+     */
+    public function getHash(): string;
+
+    /**
+     * @param string $hash
+     * @return IContentsItem
+     */
+    public function setHash(string $hash): IContentsItem;
 }

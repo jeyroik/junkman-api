@@ -32,6 +32,14 @@
     {
       "class": "junkman\\components\\contents\\ContentsItemRepository",
       "interface": "contentsItemRepository"
+    },
+    {
+      "class": "junkman\\components\\using\\UserRepository",
+      "interface": "junkmanUserRepository"
+    },
+    {
+      "class": "junkman\\components\\using\\UsableRepository",
+      "interface": "junkmanUsableRepository"
     }
   ],
   "plugins": [
@@ -51,6 +59,15 @@
     {
       "class": "junkman\\components\\expands\\junkman\\JunkmanItems",
       "stage": "expand.index.junkman"
+    },
+    {
+      "class": "junkman\\components\\plugins\\using\\PluginRecordUsing",
+      "stage": [
+        "extas.junkmen.create.after",
+        "extas.skills.create.after",
+        "extas.contents_items.create.after",
+        "extas.locations.create.after"
+      ]
     }
   ],
   "extensions": [
@@ -64,7 +81,10 @@
         "junkmanRepository",
         "junkman\\interfaces\\IJunkmanRepository",
         "locationRepository",
-        "junkman\\interfaces\\locations\\ILocationRepository"
+        "junkman\\interfaces\\locations\\ILocationRepository",
+        "junkmanUserRepository",
+        "junkmanUsableRepository",
+        "contentsItemRepository"
       ]
     },
     {
@@ -112,8 +132,14 @@
     {
       "class": "junkman\\components\\extensions\\actions\\ActionJunkmanTake",
       "interface": "junkman\\interfaces\\extensions\\actions\\IActionJunkmanTake",
-      "subject": "junkman.self",
-      "methods": ["take", "throw"]
+      "subject": ["junkman.self", "junkman.location"],
+      "methods": ["take"]
+    },
+    {
+      "class": "junkman\\components\\extensions\\ExtensionHasTakeHash",
+      "interface": "junkman\\interfaces\\extensions\\IExtensionHasTakeHash",
+      "subject": "*",
+      "methods": ["getTakeHash", "setTakeHash"]
     }
   ],
   "junkman_locations": [
@@ -256,6 +282,18 @@
         }
       },
       "value": []
+    },
+    {
+      "id": "@uuid6",
+      "name": "class",
+      "type": "string",
+      "parameters": {
+        "subject": {
+          "name": "subject",
+          "value": "junkman.self"
+        }
+      },
+      "value": "junkman\\components\\persons\\Unknown"
     },
     {
       "id": "@uuid6",
