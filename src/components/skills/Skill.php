@@ -48,6 +48,6 @@ class Skill extends SkillSample implements ISkill
      */
     protected function getSubjectForExtension(): string
     {
-        return static::SUBJECT;
+        return 'junkman.skill';
     }
 }

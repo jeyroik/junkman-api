@@ -12,8 +12,6 @@ use junkman\interfaces\using\ICanUse;
  */
 interface ISkill extends ISkillSample, IHasSample, ICanUse
 {
-    public const SUBJECT = 'junkman.skill';
-
     public const FIELD__CAN_DAMAGE_ANOTHER = 'can_damage_another';
 
     /**
