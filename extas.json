@@ -19,6 +19,10 @@
     },
     {
       "class": "junkman\\components\\skills\\SkillSampleRepository",
+      "interface": "junkman\\interfaces\\skills\\ISkillSampleRepository"
+    },
+    {
+      "class": "junkman\\components\\skills\\SkillSampleRepository",
       "interface": "skillSampleRepository"
     },
     {
