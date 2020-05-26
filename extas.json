@@ -18,6 +18,10 @@
       "interface": "skillRepository"
     },
     {
+      "class": "junkman\\components\\skills\\SkillSampleRepository",
+      "interface": "skillSampleRepository"
+    },
+    {
       "class": "junkman\\components\\locations\\LocationRepository",
       "interface": "junkman\\interfaces\\locations\\ILocationRepository"
     },
@@ -47,6 +51,7 @@
       "class": [
         "junkman\\components\\plugins\\PluginInstallJunkmen",
         "junkman\\components\\plugins\\PluginInstallSkills",
+        "junkman\\components\\plugins\\PluginInstallSkillsSamples",
         "junkman\\components\\plugins\\PluginInstallLocations",
         "junkman\\components\\plugins\\PluginInstallContentsItems"
       ],
@@ -77,6 +82,7 @@
       "subject": "*",
       "methods": [
         "skillRepository",
+        "skillSampleRepository",
         "junkman\\interfaces\\skills\\ISkillRepository",
         "junkmanRepository",
         "junkman\\interfaces\\IJunkmanRepository",
