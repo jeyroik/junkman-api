@@ -596,6 +596,43 @@
       }
     },
     {
+      "name": "junkman.use",
+      "title": "Use anything",
+      "description": "Use anything you have or found",
+      "method": "",
+      "item_name": "",
+      "item_class": "",
+      "item_repo": "",
+      "class": "junkman\\components\\jsonrpc\\JunkmanUse",
+      "spec": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "who": {
+              "type": "string"
+            },
+            "what": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string"
+            },
+            "args": {
+              "type": "object"
+            }
+          }
+        },
+        "response": {
+          "type": "array",
+          "properties": {
+            "story": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "junkman.fight",
       "title": "Junkman add skill",
       "description": "Add a skill to a junkman",
