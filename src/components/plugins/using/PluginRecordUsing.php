@@ -29,7 +29,9 @@ class PluginRecordUsing extends Plugin implements IStageCreateAfter
     {
         if ($createdItem instanceof ICanUse) {
             $this->createICanUse($createdItem, $repository);
-        } elseif ($createdItem instanceof ICanBeUsed) {
+        }
+
+        if ($createdItem instanceof ICanBeUsed) {
             $this->createICanBeUsed($createdItem, $repository);
         }
     }
