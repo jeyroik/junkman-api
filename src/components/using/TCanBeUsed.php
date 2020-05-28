@@ -1,6 +1,7 @@
 <?php
 namespace junkman\components\using;
 
+use extas\interfaces\IItem;
 use junkman\interfaces\using\ICanUse;
 
 /**
@@ -33,8 +34,13 @@ trait TCanBeUsed
     {
         $can = true;
 
+        /**
+         * @var IItem $dispatcher
+         */
+        $dispatcher = $this->buildClassWithParameters();
+
         foreach ($actions as $action) {
-            if (!$this->hasMethod($action)) {
+            if (!$dispatcher->hasMethod($action)) {
                 $can = false;
                 break;
             }

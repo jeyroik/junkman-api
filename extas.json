@@ -140,12 +140,6 @@
       ]
     },
     {
-      "class": "junkman\\components\\extensions\\actions\\ActionJunkmanTake",
-      "interface": "junkman\\interfaces\\extensions\\actions\\IActionJunkmanTake",
-      "subject": ["junkman.self", "junkman.location"],
-      "methods": ["take"]
-    },
-    {
       "class": "junkman\\components\\extensions\\ExtensionHasTakeHash",
       "interface": "junkman\\interfaces\\extensions\\IExtensionHasTakeHash",
       "subject": "*",

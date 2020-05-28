@@ -43,13 +43,14 @@ class JunkmanUse extends OperationDispatcher
             list($who, $what) = $this->getSubjects($whoName, $whatName);
             list($whoSelf, $whatSelf) = $this->getSelves($who, $what);
 
+            /**
+             * @var ICanUse $whoSelf
+             */
+
             if (!$whoSelf->canUse($whatSelf, $action)) {
                 throw new \Exception($whoName . ' can not use ' . $whatName . ' for ' . $action);
             }
 
-            /**
-             * @var ICanUse $whoSelf
-             */
             $whoSelf->useThis($whatSelf, $action, $args);
 
             $who->getRepository()->update($whoSelf);
