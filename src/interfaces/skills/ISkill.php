@@ -1,6 +1,7 @@
 <?php
 namespace junkman\interfaces\skills;
 
+use extas\interfaces\players\IHasPlayer;
 use extas\interfaces\samples\IHasSample;
 use junkman\interfaces\using\ICanUse;
 
@@ -10,7 +11,7 @@ use junkman\interfaces\using\ICanUse;
  * @package junkman\interfaces\skills
  * @author jeyroik@gmail.com
  */
-interface ISkill extends ISkillSample, IHasSample, ICanUse
+interface ISkill extends ISkillSample, IHasSample, ICanUse, IHasPlayer
 {
     public const FIELD__CAN_DAMAGE_ANOTHER = 'can_damage_another';
 

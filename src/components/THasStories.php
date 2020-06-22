@@ -16,6 +16,7 @@ trait THasStories
 {
     /**
      * @param string $storyTag
+     * @param array $replaces
      */
     public function tellRandomStory(string $storyTag, array $replaces = []): void
     {

@@ -11,8 +11,6 @@ use junkman\interfaces\IJunkman;
  */
 interface IHasSkills
 {
-    public const FIELD__SKILLS = 'skills';
-
     /**
      * @param ISkill $skill
      * @return $this

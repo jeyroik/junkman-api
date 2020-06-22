@@ -59,7 +59,7 @@ class Unknown extends Plugin
         $hash = $this->getCurrentHash();
 
         if (!$usable->hasMethod('getTakeHash()')) {
-            throw new \Exception('Эту вещь нельзя взять...');
+            throw new \Exception('У этой вещи нет секрета...');
         }
 
         if (!$hash || ($hash != $usable->getTakeHash())) {

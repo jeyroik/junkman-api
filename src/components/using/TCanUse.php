@@ -42,12 +42,16 @@ trait TCanUse
      * @param ICanBeUsed $canBeUsed
      * @param string $action
      * @param array $args
+     * @throws \Exception
      */
     public function useThis(ICanBeUsed &$canBeUsed, string $action, array $args): void
     {
-        $dispatcher = $this->buildClassWithParameters($args);
-        $dispatcher->$action($this, $canBeUsed);
-        $canBeUsed->useFor($this, $this->getForAction($action), $args);
+        if ($this->hasMethod($action)) {
+            $this->$action($canBeUsed, ...$args);
+            $canBeUsed->useFor($this, $this->getForAction($action), $args);
+        } else {
+            throw new \Exception($this->getName() . ' can not ' . $action);
+        }
     }
 
     /**

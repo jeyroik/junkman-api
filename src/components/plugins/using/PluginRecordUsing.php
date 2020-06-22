@@ -5,6 +5,7 @@ use extas\components\plugins\Plugin;
 use extas\interfaces\IItem;
 use extas\interfaces\repositories\IRepository;
 use extas\interfaces\stages\IStageCreateAfter;
+use junkman\components\using\Usable;
 use junkman\components\using\User;
 use junkman\interfaces\using\ICanBeUsed;
 use junkman\interfaces\using\ICanUse;
@@ -42,7 +43,7 @@ class PluginRecordUsing extends Plugin implements IStageCreateAfter
      */
     protected function createICanUse(IItem &$createdItem, IRepository $repository = null): void
     {
-        $this->create($this->junkmanUserRepository(), $createdItem, $repository);
+        $this->create($this->junkmanUserRepository(), $createdItem, $repository, User::class);
     }
 
     /**
@@ -51,17 +52,18 @@ class PluginRecordUsing extends Plugin implements IStageCreateAfter
      */
     protected function createICanBeUsed(IItem &$createdItem, IRepository $repository = null): void
     {
-        $this->create($this->junkmanUsableRepository(), $createdItem, $repository);
+        $this->create($this->junkmanUsableRepository(), $createdItem, $repository, Usable::class);
     }
 
     /**
      * @param IRepository $store
      * @param IItem $item
      * @param IRepository $itemRepository
+     * @param string $itemClass
      */
-    protected function create(IRepository $store, IItem $item, IRepository $itemRepository): void
+    protected function create(IRepository $store, IItem $item, IRepository $itemRepository, string $itemClass): void
     {
-        $store->create(new User([
+        $store->create(new $itemClass([
             User::FIELD__ID => '@uuid6',
             User::FIELD__NAME => $item->getName(),
             User::FIELD__REPOSITORY_CLASS => get_class($itemRepository)

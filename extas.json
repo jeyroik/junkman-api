@@ -1,66 +1,137 @@
 {
   "name": "junkman/api",
-  "package_classes": [
+  "index": {
+    "init": [
+      "repositories", "fields", "parsers" ,"junkers", "junkman_locations",
+      "junkman_items_samples", "junkman_skills_samples",
+      "jsonrpc_operations"
+    ],
+    "install": [
+      "repositories", "fields", "parsers" ,"junkers", "junkman_locations",
+      "junkman_items_samples", "junkman_skills_samples",
+      "jsonrpc_operations"
+    ],
+    "uninstall": [
+      "junkers", "junkman_locations",
+      "junkman_items_samples", "junkman_skills_samples",
+      "jsonrpc_operations", "fields", "parsers","repositories"
+    ]
+  },
+  "repositories": [
     {
-      "class": "junkman\\components\\JunkmanRepository",
-      "interface": "junkman\\interfaces\\IJunkmanRepository"
+      "name": "junkers",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\junkers\\Junkman",
+      "aliases": ["junkmanRepository", "junkers"]
     },
     {
-      "class": "junkman\\components\\JunkmanRepository",
-      "interface": "junkmanRepository"
+      "name": "junkers_samples",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\junkers\\JunkmanSample",
+      "aliases": ["junkmanSampleRepository", "junkersSamples"]
     },
     {
-      "class": "junkman\\components\\skills\\SkillRepository",
-      "interface": "junkman\\interfaces\\skills\\ISkillRepository"
+      "name": "skills",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\skills\\Skill",
+      "aliases": ["skillRepository", "skills"]
     },
     {
-      "class": "junkman\\components\\skills\\SkillRepository",
-      "interface": "skillRepository"
+      "name": "skills_samples",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\skills\\SkillSample",
+      "aliases": ["skillSampleRepository", "skillsSamples"]
     },
     {
-      "class": "junkman\\components\\skills\\SkillSampleRepository",
-      "interface": "junkman\\interfaces\\skills\\ISkillSampleRepository"
+      "name": "locations",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\locations\\Location",
+      "aliases": ["locationRepository", "locations"]
     },
     {
-      "class": "junkman\\components\\skills\\SkillSampleRepository",
-      "interface": "skillSampleRepository"
+      "name": "contents_items",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\contents\\ContentsItem",
+      "aliases": ["contentsItemRepository", "contentsItems"]
     },
     {
-      "class": "junkman\\components\\locations\\LocationRepository",
-      "interface": "junkman\\interfaces\\locations\\ILocationRepository"
+      "name": "users",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\using\\User",
+      "aliases": ["junkmanUserRepository", "junkmanUsers"]
     },
     {
-      "class": "junkman\\components\\locations\\LocationRepository",
-      "interface": "locationRepository"
+      "name": "usable",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\using\\Usable",
+      "aliases": ["junkmanUsableRepository", "junkmanUsable"]
     },
     {
-      "class": "junkman\\components\\contents\\ContentsItemRepository",
-      "interface": "junkman\\interfaces\\contents\\IContentsItemRepository"
+      "name": "characteristics",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\characteristics\\Characteristic",
+      "aliases": ["characteristicRepository", "characteristics"]
     },
     {
-      "class": "junkman\\components\\contents\\ContentsItemRepository",
-      "interface": "contentsItemRepository"
+      "name": "characteristics_samples",
+      "scope": "junkman",
+      "pk": "name",
+      "class": "junkman\\components\\characteristics\\CharacteristicSample",
+      "aliases": ["characteristicSampleRepository", "characteristicsSamples"]
+    }
+  ],
+  "plugins_install": [
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
     },
     {
-      "class": "junkman\\components\\using\\UserRepository",
-      "interface": "junkmanUserRepository"
+      "name": "junkman characteristic sample",
+      "repository": "characteristicSampleRepository",
+      "section": "junkman_characteristics_samples"
     },
     {
-      "class": "junkman\\components\\using\\UsableRepository",
-      "interface": "junkmanUsableRepository"
+      "name": "junkman item",
+      "repository": "contentsItemRepository",
+      "section": "junkman_items"
+    },
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
+    },
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
+    },
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
+    },
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
+    },
+    {
+      "name": "junkman characteristic",
+      "repository": "characteristicRepository",
+      "section": "junkman_characteristics"
     }
   ],
   "plugins": [
-    {
-      "class": [
-        "junkman\\components\\plugins\\PluginInstallJunkmen",
-        "junkman\\components\\plugins\\PluginInstallSkills",
-        "junkman\\components\\plugins\\PluginInstallSkillsSamples",
-        "junkman\\components\\plugins\\PluginInstallLocations",
-        "junkman\\components\\plugins\\PluginInstallContentsItems"
-      ],
-      "stage": "extas.install"
-    },
     {
       "class": "extas\\components\\plugins\\PluginFieldsDefaults",
       "stage": "junkman.self.init"
@@ -77,50 +148,61 @@
         "extas.contents_items.create.after",
         "extas.locations.create.after"
       ]
+    },
+    {
+      "class": "extas\\components\\plugins\\repositories\\PluginFieldUUid",
+      "stage": "extas.usable.create.before"
+    },
+    {
+      "class": "extas\\components\\plugins\\repositories\\PluginFieldUUid",
+      "stage": "extas.users.create.before"
     }
   ],
   "extensions": [
     {
-      "class": "extas\\components\\extensions\\ExtensionRepositoryGet",
-      "interface": "extas\\interfaces\\extensions\\IExtensionRepositoryGet",
+      "class": "extas\\components\\extensions\\ExtensionRepositoryDescription",
+      "interface": "extas\\interfaces\\extensions\\IExtensionRepositoryDescription",
       "subject": "*",
       "methods": [
         "skillRepository",
         "skillSampleRepository",
-        "junkman\\interfaces\\skills\\ISkillRepository",
         "junkmanRepository",
-        "junkman\\interfaces\\IJunkmanRepository",
         "locationRepository",
-        "junkman\\interfaces\\locations\\ILocationRepository",
         "junkmanUserRepository",
         "junkmanUsableRepository",
-        "contentsItemRepository"
+        "contentsItemRepository",
+        "characteristicRepository",
+        "characteristicSampleRepository"
       ]
     },
     {
-      "class": "junkman\\components\\extensions\\ExtensionHealth",
-      "interface": "junkman\\interfaces\\extensions\\IExtensionHealth",
+      "class": "junkman\\components\\extensions\\HasHealth",
+      "interface": "junkman\\interfaces\\extensions\\IHasHealth",
       "subject": "junkman.self",
       "methods": [
         "getCurrentHealth",
-        "getCurrentHealthRegeneration",
         "getMaxHealth",
+        "getMinHealth",
         "getLostHealth",
         "incHealth",
         "decHealth",
         "incMaxHealth",
         "decMaxHealth",
-        "incHealthRegeneration",
-        "decHealthRegeneration",
+        "incMinHealth",
+        "decMinHealth",
         "isDead"
       ]
     },
     {
-      "class": "junkman\\components\\extensions\\ExtensionMoveToLocation",
-      "interface": "junkman\\interfaces\\extensions\\IExtensionMoveToLocation",
+      "class": "junkman\\components\\extensions\\HasLocation",
+      "interface": "junkman\\interfaces\\extensions\\IHasLocation",
       "subject": "junkman.self",
       "methods": [
-        "moveToLocation"
+        "getLocationName",
+        "getLocation",
+        "setLocation",
+        "moveToLocation",
+        "lookAround"
       ]
     },
     {
@@ -128,22 +210,6 @@
       "interface": "junkman\\interfaces\\extensions\\IExtensionStory",
       "subject": "*",
       "methods": ["tellStory", "getStory"]
-    },
-    {
-      "class": "junkman\\components\\extensions\\ExtensionOccupied",
-      "interface": "junkman\\interfaces\\extensions\\IExtensionOccupied",
-      "subject": "junkman.contents.item",
-      "methods": [
-        "incXOccupied", "incYOccupied", "incZOccupied",
-        "decXOccupied", "decYOccupied", "decZOccupied",
-        "incSizeOccupied", "decSizeOccupied"
-      ]
-    },
-    {
-      "class": "junkman\\components\\extensions\\ExtensionHasTakeHash",
-      "interface": "junkman\\interfaces\\extensions\\IExtensionHasTakeHash",
-      "subject": "*",
-      "methods": ["getTakeHash", "setTakeHash"]
     }
   ],
   "junkman_locations": [
@@ -190,7 +256,7 @@
       }
     }
   ],
-  "junkman_items": [
+  "junkman_items_samples": [
     {
       "name": "spike_thrower",
       "title": "Гвоздомёт",
@@ -207,14 +273,13 @@
       "player_name": ""
     }
   ],
-  "junkman_skills": [
+  "junkman_skills_samples": [
     {
       "name": "rest",
       "title": "Отдых",
       "description": "Позволяет восстановить силы",
       "definition": "Восстанавливает Х здоровья и уменьшает усталость на Х, где Х - значение регенерации",
       "class": "junkman\\components\\skills\\SkillRest",
-      "can_damage_another": false,
       "frequency": [],
       "parameters": {
         "default_health_regen": {
@@ -229,7 +294,6 @@
       "description": "Позволяет порыться в попытках найти хоть что-нибудь",
       "definition": "Позволяет найти дополнительные артефакты",
       "class": "junkman\\components\\skills\\SkillSearch",
-      "can_damage_another": false,
       "frequency": [],
       "parameters": {}
     },
@@ -239,7 +303,6 @@
       "description": "Усталость",
       "definition": "Каждые 5 ед. усталости отнимает 1 ед. жизни, каждые 5 отнятые ед. жизни увеличичвают усталость на 1 ед.",
       "class": "junkman\\components\\skills\\SkillTiredness",
-      "can_damage_another": false,
       "frequency": [],
       "parameters": {}
     },
@@ -249,7 +312,6 @@
       "description": "Если вас ударили по левой щеке, то подставьте правую...ногу, присядьте и бейте снизу.",
       "definition": "Отнимает Х здоровья у цели, где Х - ваш уровень атаки.",
       "class": "junkman\\components\\skills\\SkillPunch",
-      "can_damage_another": true,
       "frequency": [],
       "parameters": {}
     },
@@ -259,7 +321,6 @@
       "description": "Вы и по стене в упор попасть не можете, но попытайтесь пнуть соперника.",
       "definition": "Отнимает Х здоровья у цели, где Х - ваш уровень атаки.",
       "class": "junkman\\components\\skills\\SkillKick",
-      "can_damage_another": true,
       "frequency": [],
       "parameters": {}
     },
@@ -270,71 +331,10 @@
       "definition": "Первый гвоздь отнимает 1 ед. чужой жизни и добавляет вам 1 ед. усталости, каждый последующий - наносит на 1 ед. больше и прибавляет на 1 ед. больше усталости.",
       "class": "junkman\\components\\skills\\SkillSpikeThrower",
       "frequency": [],
-      "can_damage_another": true,
       "parameters": {}
     }
   ],
   "fields": [
-    {
-      "id": "@uuid6",
-      "name": "contents_items",
-      "type": "array",
-      "parameters": {
-        "subject": {
-          "name": "subject",
-          "value": "junkman.self"
-        }
-      },
-      "value": []
-    },
-    {
-      "id": "@uuid6",
-      "name": "class",
-      "type": "string",
-      "parameters": {
-        "subject": {
-          "name": "subject",
-          "value": "junkman.self"
-        }
-      },
-      "value": "junkman\\components\\persons\\Unknown"
-    },
-    {
-      "id": "@uuid6",
-      "name": "contents_items_max",
-      "type": "int",
-      "parameters": {
-        "subject": {
-          "name": "subject",
-          "value": "junkman.self"
-        }
-      },
-      "value": 4
-    },
-    {
-      "id": "@uuid6",
-      "name": "location_name",
-      "type": "string",
-      "parameters": {
-        "subject": {
-          "name": "subject",
-          "value": "junkman.self"
-        }
-      },
-      "value": "@oneof(butterfly_nii_stage_6_hall,butterfly_nii_cabinet_671)"
-    },
-    {
-      "id": "@uuid6",
-      "name": "skills",
-      "type": "array",
-      "parameters": {
-        "subject": {
-          "name": "subject",
-          "value": "junkman.self"
-        }
-      },
-      "value": ["rest", "tiredness", "punch", "kick", "search"]
-    },
     {
       "id": "@uuid6",
       "name": "parameters",
@@ -345,56 +345,7 @@
           "value": "junkman.self"
         }
       },
-      "value": {
-        "health": {
-          "name": "health",
-          "value": 100
-        },
-        "health_max": {
-          "name": "health_max",
-          "value": 100
-        },
-        "health_regeneration": {
-          "name": "health_regeneration",
-          "value": 1
-        },
-        "attack": {
-          "name": "attack",
-          "value": 1
-        },
-        "attack_max": {
-          "name": "attack_max",
-          "value": 1
-        },
-        "defense": {
-          "name": "defense",
-          "value": 1
-        },
-        "defense_max": {
-          "name": "defense_max",
-          "value": 1
-        },
-        "move": {
-          "name": "move",
-          "value": 1
-        },
-        "move_speed": {
-          "name": "move_speed",
-          "value": 1
-        },
-        "critical_chance": {
-          "name": "critical_chance",
-          "value": 5
-        },
-        "critical_multiple": {
-          "name": "critical_multiple",
-          "value": 20
-        },
-        "tiredness": {
-          "name": "tiredness",
-          "value": 0
-        }
-      }
+      "value": []
     }
   ],
   "parsers": [
@@ -422,173 +373,6 @@
     }
   ],
   "jsonrpc_operations": [
-    {
-      "name": "junkman.skill.add",
-      "title": "Junkman add skill",
-      "description": "Add a skill to a junkman",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanAddSkill",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            },
-            "skill_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "skills": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "class": {
-                  "type": "string"
-                },
-                "parameters": {
-                  "type": "array",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "mixed"
-                    }
-                  }
-                }
-              }
-            },
-            "parameters": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "mixed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.item.use",
-      "title": "Use an item",
-      "description": "Use any item",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanItemUse",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "from_name": {
-              "type": "string"
-            },
-            "item_name": {
-              "type": "string"
-            },
-            "to_name": {
-              "type": "string"
-            },
-            "to_item": {
-              "type": "string"
-            },
-            "action": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "skills": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "class": {
-                  "type": "string"
-                },
-                "parameters": {
-                  "type": "array",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "mixed"
-                    }
-                  }
-                }
-              }
-            },
-            "parameters": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "mixed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     {
       "name": "junkman.use",
       "title": "Use anything",
@@ -621,370 +405,6 @@
           "properties": {
             "story": {
               "type": "string"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.fight",
-      "title": "Junkman add skill",
-      "description": "Add a skill to a junkman",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanFight",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "attacker_name": {
-              "type": "string"
-            },
-            "defender_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "attacker_name": {
-              "type": "string"
-            },
-            "attacker": {
-              "type": "string"
-            },
-            "defender_name": {
-              "type": "string"
-            },
-            "defender": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.skill.remove",
-      "title": "Junkman remove skill",
-      "description": "Remove a skill from a junkman",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanRemoveSkill",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            },
-            "skill_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "skills": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "class": {
-                  "type": "string"
-                },
-                "parameters": {
-                  "type": "array",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "mixed"
-                    }
-                  }
-                }
-              }
-            },
-            "parameters": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "mixed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.skill.use",
-      "title": "Junkman use skill",
-      "description": "Use any junkman skill, but be careful!",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanUseSkill",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            },
-            "skill_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "skills": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "class": {
-                  "type": "string"
-                },
-                "parameters": {
-                  "type": "array",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "mixed"
-                    }
-                  }
-                }
-              }
-            },
-            "parameters": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "mixed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.search",
-      "title": "Search something...",
-      "description": "Try to search something around",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanSearch",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "skills": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "class": {
-                  "type": "string"
-                },
-                "parameters": {
-                  "type": "array",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "mixed"
-                    }
-                  }
-                }
-              }
-            },
-            "parameters": {
-              "type": "array",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "mixed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.where",
-      "title": "Where are you",
-      "description": "Look around",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanWhere",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "current_title": {
-              "type": "string"
-            },
-            "current_about": {
-              "type": "string"
-            },
-            "adjacent": {
-              "type": "array",
-              "properties": {
-                "item": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "junkman.move",
-      "title": "Move between locations",
-      "description": "Move to another location",
-      "method": "update",
-      "item_name": "",
-      "item_class": "",
-      "item_repo": "",
-      "class": "junkman\\components\\jsonrpc\\JunkmanMove",
-      "spec": {
-        "request": {
-          "type": "object",
-          "properties": {
-            "junkman_name": {
-              "type": "string"
-            },
-            "adjacent_name": {
-              "type": "string"
-            }
-          }
-        },
-        "response": {
-          "type": "array",
-          "properties": {
-            "story": {
-              "type": "string"
-            },
-            "current_title": {
-              "type": "string"
-            },
-            "current_about": {
-              "type": "string"
-            },
-            "adjacent": {
-              "type": "array",
-              "properties": {
-                "item": {
-                  "type": "string"
-                }
-              }
             }
           }
         }

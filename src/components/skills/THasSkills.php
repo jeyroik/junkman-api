@@ -10,7 +10,9 @@ use junkman\interfaces\skills\ISkill;
  * 
  * @property array $config
  *
+ * @method getName()
  * @method skillRepository()
+ * @method skillSampleRepository()
  * @method getPluginsByStage(string $stage)
  * @method getSubjectForExtension(): string
  * @method use(IHasClass $subject, string $stageSuffix, ...$args): void
@@ -26,12 +28,15 @@ trait THasSkills
      */
     public function addSkill(ISkill $skill)
     {
-        $this->config[IHasSkills::FIELD__SKILLS] = $this->config[IHasSkills::FIELD__SKILLS] ?? [];
-        $this->config[IHasSkills::FIELD__SKILLS][] = $skill->getName();
+        if ($this->hasSkill($skill->getName())) {
+            return $this;
+        }
 
         foreach ($this->getPluginsByStage($this->getSubjectForExtension() . '.skill.added') as $plugin) {
             $plugin($this, $skill);
         }
+
+        $this->skillRepository()->create($skill);
 
         return $this;
     }
@@ -50,8 +55,7 @@ trait THasSkills
      */
     public function getSkills(): array
     {
-        $skillsNames = $this->config[IHasSkills::FIELD__SKILLS] ?? [];
-        return $this->skillRepository()->all([ISkill::FIELD__NAME => $skillsNames]);
+        return $this->skillRepository()->all([ISkill::FIELD__PLAYER_NAME => $this->getName()]);
     }
 
     /**
@@ -73,9 +77,7 @@ trait THasSkills
      */
     public function hasSkill(string $skillName): bool
     {
-        $skills = $this->config[IHasSkills::FIELD__SKILLS] ?? [];
-
-        return in_array($skillName, $skills);
+        return $this->skillRepository()->one([ISkill::FIELD__NAME => $skillName]) ? true : false;
     }
 
     /**
@@ -85,19 +87,17 @@ trait THasSkills
     public function removeSkill(string $skillName)
     {
         if ($this->hasSkill($skillName)) {
-            $skills = $this->config[IHasSkills::FIELD__SKILLS] ?? [];
-            $byName = array_flip($skills);
-            unset($byName[$skillName]);
-            $this->config[IHasSkills::FIELD__SKILLS] = array_keys($byName);
+            $skill = $this->getSkill($skillName);
+            $this->skillRepository()->delete([ISkill::FIELD__NAME => $skillName]);
 
             $stage = $this->getSubjectForExtension() . '.skill.removed';
             foreach ($this->getPluginsByStage($stage) as $plugin) {
-                $plugin($this, $skillName);
+                $plugin($this, $skill);
             }
 
-            $stage = $this->getSubjectForExtension() . '.skill.removed.' . $skillName;
+            $stage = $this->getSubjectForExtension() . '.skill.removed.' . $skill->getSampleName();
             foreach ($this->getPluginsByStage($stage) as $plugin) {
-                $plugin($this, $skillName);
+                $plugin($this, $skill);
             }
         }
 

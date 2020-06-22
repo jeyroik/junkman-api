@@ -7,12 +7,14 @@ use junkman\components\skills\SkillSpikeThrower;
 use junkman\components\THasStories;
 use junkman\interfaces\contents\IContentsItem;
 use junkman\interfaces\IJunkman;
+use junkman\interfaces\skills\ISkillSample;
 use junkman\interfaces\using\ICanUse;
 
 /**
  * Class SpikeThrower
  *
  * @method contentsItemRepository()
+ * @method skillSampleRepository()
  *
  * @package junkman\components\contents\items
  * @author jeyroik@gmail.com
@@ -33,7 +35,8 @@ class SpikeThrower extends Plugin
             '@junkman молча выбросил гвоздомёт на пол.'
         ],
         'take' => [
-            'Вы обоими руками обхватили ручки гвоздомёта. В нём чувствуется мощь и бесполезность.'
+            'Вы обоими руками обхватили ручки гвоздомёта. В нём чувствуется мощь и бесполезность. '
+            . 'Похоже, им можно стрелять.'
         ],
         'missed_spike' => [
             'А что заряжать-то будем? [Передайте в args в параметре ' . self::ARG__SPIKE . ' name гвоздя]'
@@ -51,7 +54,13 @@ class SpikeThrower extends Plugin
     public function forTake(IContentsItem &$spikeThrower, ICanUse &$owner): void
     {
         if ($owner instanceof IJunkman) {
-            $owner->addSkill(new Skill([Skill::FIELD__NAME => SkillSpikeThrower::NAME]));
+            $useSpikeThrower = $this->skillSampleRepository()->one([ISkillSample::FIELD__NAME => 'use_spike_thrower']);
+            if (!$useSpikeThrower) {
+                throw new \Exception('В этом мире куда-то делся навык использования гвоздомёта...');
+            }
+            $skill = new Skill();
+            $skill->buildFromSample($useSpikeThrower);
+            $owner->addSkill($skill);
             $this->tellRandomStory('take');
         }
     }

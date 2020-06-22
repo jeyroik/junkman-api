@@ -1,6 +1,7 @@
 <?php
 namespace junkman\components\skills;
 
+use extas\components\players\THasPlayer;
 use extas\components\samples\THasSample;
 use junkman\components\using\TCanUse;
 use junkman\interfaces\skills\ISkill;
@@ -18,6 +19,7 @@ class Skill extends SkillSample implements ISkill
 {
     use THasSample;
     use TCanUse;
+    use THasPlayer;
 
     /**
      * @return string

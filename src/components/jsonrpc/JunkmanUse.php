@@ -2,7 +2,9 @@
 namespace junkman\components\jsonrpc;
 
 use extas\components\jsonrpc\operations\OperationDispatcher;
+use extas\components\workflows\exceptions\ExceptionMissed;
 use extas\interfaces\jsonrpc\IRequest;
+use junkman\components\exceptions\ExceptionCanNotUseFor;
 use junkman\interfaces\using\ICanUse;
 use junkman\interfaces\using\IUsable;
 use junkman\interfaces\using\IUser;
@@ -46,9 +48,8 @@ class JunkmanUse extends OperationDispatcher
             /**
              * @var ICanUse $whoSelf
              */
-
             if (!$whoSelf->canUse($whatSelf, $action)) {
-                throw new \Exception($whoName . ' can not use ' . $whatName . ' for ' . $action);
+                throw new ExceptionCanNotUseFor($whoName . ' can not use ' . $whatName . ' for ' . $action);
             }
 
             $whoSelf->useThis($whatSelf, $action, $args);
@@ -59,9 +60,7 @@ class JunkmanUse extends OperationDispatcher
             return $this->errorResponse($request->getId(), $e->getMessage(), 400);
         }
 
-        return $this->successResponse($request->getId(), [
-            'story' => $this->getStory()
-        ]);
+        return $this->successResponse($request->getId(), ['story' => $this->getStory()]);
     }
 
     /**
@@ -78,7 +77,7 @@ class JunkmanUse extends OperationDispatcher
      * @param string $whoName
      * @param string $whatName
      * @return array
-     * @throws \Exception
+     * @throws ExceptionMissed
      */
     protected function getSubjects(string $whoName, string $whatName): array
     {
@@ -103,14 +102,14 @@ class JunkmanUse extends OperationDispatcher
     /**
      * @param string $name
      * @return IUsable
-     * @throws \Exception
+     * @throws ExceptionMissed
      */
     protected function getWhat(string $name): IUsable
     {
         $usable = $this->junkmanUsableRepository()->one([IUsable::FIELD__NAME => $name]);
 
         if (!$usable) {
-            throw new \Exception('Missed what');
+            throw new ExceptionMissed('what');
         }
 
         return $usable;
@@ -119,19 +118,22 @@ class JunkmanUse extends OperationDispatcher
     /**
      * @param string $name
      * @return IUser
-     * @throws \Exception
+     * @throws ExceptionMissed
      */
     protected function getWho(string $name): IUser
     {
         $user = $this->junkmanUserRepository()->one([IUser::FIELD__NAME => $name]);
 
         if (!$user) {
-            throw new \Exception('Missed who');
+            throw new ExceptionMissed('who');
         }
 
         return $user;
     }
 
+    /**
+     * @return string
+     */
     protected function getSubjectForExtension(): string
     {
         return 'junkman.operation.junkman.use';

@@ -2,9 +2,9 @@
 namespace junkman\components\locations;
 
 use extas\components\Item;
-use junkman\interfaces\IJunkman;
+use extas\interfaces\samples\parameters\IHasSampleParameters;
+use junkman\interfaces\extensions\IHasLocation;
 use junkman\interfaces\locations\ILocation;
-use junkman\interfaces\locations\ILocationAdjacent;
 
 /**
  * Class AdjacentDoorOpen
@@ -17,14 +17,13 @@ use junkman\interfaces\locations\ILocationAdjacent;
 class AdjacentDoorOpen extends Item
 {
     /**
-     * @param IJunkman $junkman
-     * @param ILocationAdjacent $adjacent
+     * @param IHasSampleParameters|IHasLocation $subject
      * @param ILocation $currentLocation
+     * @param ILocation $adjacent
      */
-    public function __invoke(IJunkman &$junkman, ILocationAdjacent $adjacent, ILocation $currentLocation): void
+    public function __invoke(IHasSampleParameters &$subject, ILocation $currentLocation, ILocation $adjacent): void
     {
-        $junkman->setLocation($adjacent->getLocation());
-        $this->junkmanRepository()->update($junkman);
+        $subject->setLocation($adjacent);
     }
 
     /**
